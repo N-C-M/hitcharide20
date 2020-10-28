@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "151917049307",
+    "firebase_url": "https://finaltry-622c5.firebaseio.com",
+    "project_id": "finaltry-622c5",
+    "storage_bucket": "finaltry-622c5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:151917049307:android:eb39f37f63e7045ff0e3fe",
+        "android_client_info": {
+          "package_name": "com.example.workavane"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "151917049307-2ljv81tol6a6e5pthkcart3r7ql6gcnb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzLpKCifErLVEp69BQvV2y2morxyM3lms"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "151917049307-2ljv81tol6a6e5pthkcart3r7ql6gcnb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
