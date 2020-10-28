@@ -9,6 +9,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 
 import 'package:workavane/screens/mainpage.dart';
+import 'package:workavane/screens/register.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +36,9 @@ Future<void> main() async {
 
  
 class MyApp extends StatelessWidget {
+
+    static const String id='mainpage';
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -44,7 +48,12 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Brand-Regular',
         primarySwatch: Colors.blue,
       ),
-       home: LoginPage(),
+       initialRoute : Register.id,
+       routes:{
+         Register.id:(context)=> Register(),
+         LoginPage.id: (context)=> LoginPage(),
+         MyApp.id : (context) => MyApp(),
+                }
     );
   }
 }
