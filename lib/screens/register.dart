@@ -1,12 +1,11 @@
-
 import 'package:flutter/material.dart';
-import 'package:workavane/screens/register.dart';
 
-class LoginPage extends StatelessWidget {
+import 'loginpage.dart';
 
-    static const String id='login';
+class Register extends StatelessWidget {
 
-  @override
+  static const String id='regsiter';
+    @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -27,7 +26,7 @@ class LoginPage extends StatelessWidget {
               SizedBox(
                 height:40,
               ),
-             Text('Sign In as Rider', // Ivide driverude vende????
+             Text('Create an Account', // 
 
              textAlign:TextAlign.center,
              style: TextStyle(fontSize: 25, fontFamily: 'Brand-Bold'),
@@ -38,11 +37,48 @@ class LoginPage extends StatelessWidget {
               child:Column(
                 children: <Widget>[
 
+                      TextField(      // Full Name
+                            
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: InputDecoration(
+                                labelText: 'Full Name',
+                                labelStyle: TextStyle(
+                                  fontSize: 14.0,
+                                ),
+                                hintStyle: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 10.0
+                                )
+                            ),
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          SizedBox(height:10,),
+
+
                       TextField(      // The Email Field
                             
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
                                 labelText: 'Email address',
+                                labelStyle: TextStyle(
+                                  fontSize: 14.0,
+                                ),
+                                hintStyle: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 10.0
+                                )
+                            ),
+                            style: TextStyle(fontSize: 14),
+                          ),
+              SizedBox(
+                height:10,
+              ),
+
+              TextField(      // Phone Number
+                            
+                            keyboardType: TextInputType.phone,
+                            decoration: InputDecoration(
+                                labelText: 'Phone Number',
                                 labelStyle: TextStyle(
                                   fontSize: 14.0,
                                 ),
@@ -75,7 +111,7 @@ class LoginPage extends StatelessWidget {
                SizedBox(height: 40,),
 
 
-               RaisedButton(   // The login Button
+               RaisedButton(   // The Register Button
                  shape: new RoundedRectangleBorder(
                    borderRadius: new BorderRadius.circular(25),
                  ),
@@ -85,7 +121,7 @@ class LoginPage extends StatelessWidget {
                    height:50,
                    child: Center(
                      child: Text(
-                       'LOGIN',
+                       'REGISTER',
                        style: TextStyle(fontSize: 18,
                        fontFamily: 'Brand-Bold')
                      ),
@@ -102,10 +138,9 @@ class LoginPage extends StatelessWidget {
 
             FlatButton(
                       onPressed: (){
-                       Navigator.pushNamedAndRemoveUntil(context, Register.id, (route) => false);
-
+                        Navigator.pushNamedAndRemoveUntil(context, LoginPage.id, (route) => false);
                       },
-                        child: Text('Don\'t have an account, sign up here')
+                        child: Text('Already have an account? Log In here')
                     ),
 
              
