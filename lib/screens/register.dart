@@ -4,6 +4,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:workavane/main.dart';
+import 'package:workavane/screens/mainpage.dart';
+import 'package:workavane/widgets/ProgressDialog.dart';
 import 'package:workavane/widgets/TaxiButton.dart';
 
 import 'loginpage.dart';
@@ -37,18 +39,32 @@ class _RegisterState extends State<Register> {
 
  void registerUser() async{
 
+  /* showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) => ProgressDialog(status: 'Registering you in',),
+    );*/
+
 final User user = (await _auth.createUserWithEmailAndPassword(  // auth aan monei correct aaitokke fill cheyne testingnu
       email: email.text,
       password: password.text,
     ).catchError((ex){
+
       
+      //Navigator.pop(context);
+
       PlatformException thisEx = ex;
       showSnackBar(thisEx.message);
 
     })// handling error like non existing emails etc
 
     ).user;
+   // Navigator.pop(context);
+
     if(user != null){
+
+                
+
       DatabaseReference newUserRef = FirebaseDatabase.instance.reference().child('users/${user.uid}');
 
       //Prepare data to be saved on users table
@@ -61,7 +77,7 @@ final User user = (await _auth.createUserWithEmailAndPassword(  // auth aan mone
       newUserRef.set(userMap);
 
       //Take the user to the mainPage
-      Navigator.pushNamedAndRemoveUntil(context, MyApp.id, (route) => false);
+      Navigator.pushNamedAndRemoveUntil(context, MainPage.id, (route) => false);
     }
  }
 

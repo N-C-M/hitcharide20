@@ -36,24 +36,23 @@ Future<void> main() async {
 
  
 class MyApp extends StatelessWidget {
-
-    static const String id='mainpage';
-
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+ Widget build(BuildContext context) {
 
     return MaterialApp(
       theme: ThemeData(
         fontFamily: 'Brand-Regular',
         primarySwatch: Colors.blue,
       ),
-       initialRoute : Register.id,
+       initialRoute : MainPage.id,
        routes:{
-         Register.id:(context)=> Register(),
-         LoginPage.id: (context)=> LoginPage(),
-         MyApp.id : (context) => MyApp(),
-                }
-    );
+          Register.id: (context) => Register(),
+          LoginPage.id: (context) => LoginPage(),
+          MainPage.id: (context) => MainPage(),
+        },
+      );
+    
   }
 }
+
