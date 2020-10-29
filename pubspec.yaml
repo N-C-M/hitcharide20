@@ -34,6 +34,10 @@ dependencies:
   firebase_auth: ^0.18.1+2
   firebase_database: ^4.1.1
   connectivity: ^2.0.0
+  google_maps_flutter: ^1.0.5
+  outline_material_icons: ^0.1.1
+
+
 
 
 
