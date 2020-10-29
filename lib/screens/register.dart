@@ -1,18 +1,29 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:workavane/main.dart';
 import 'package:workavane/widgets/TaxiButton.dart';
 
 import 'loginpage.dart';
 
-class Register extends StatelessWidget {
+class Register extends StatefulWidget {
     static const String id='register';
 
+  @override
+  _RegisterState createState() => _RegisterState();
+}
+
+class _RegisterState extends State<Register> {
  final FirebaseAuth _auth= FirebaseAuth.instance;
 
  var fullname=new TextEditingController();
+
  var email =new TextEditingController();
+
  var phno=new TextEditingController();
+
  var password=new TextEditingController();
 
  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -23,21 +34,36 @@ class Register extends StatelessWidget {
     );
     scaffoldKey.currentState.showSnackBar(snackbar);
   }
- 
+
  void registerUser() async{
 
 final User user = (await _auth.createUserWithEmailAndPassword(  // auth aan monei correct aaitokke fill cheyne testingnu
       email: email.text,
       password: password.text,
-    )
+    ).catchError((ex){
+      
+      PlatformException thisEx = ex;
+      showSnackBar(thisEx.message);
+
+    })// handling error like non existing emails etc
 
     ).user;
     if(user != null){
-      print('regsitration successful');
+      DatabaseReference newUserRef = FirebaseDatabase.instance.reference().child('users/${user.uid}');
+
+      //Prepare data to be saved on users table
+      Map userMap = {
+        'fullname': fullname.text,
+        'email': email.text,
+        'phone': phno.text,
+      };
+
+      newUserRef.set(userMap);
+
+      //Take the user to the mainPage
+      Navigator.pushNamedAndRemoveUntil(context, MyApp.id, (route) => false);
     }
  }
- 
-
 
     @override
   Widget build(BuildContext context) {
@@ -151,7 +177,7 @@ final User user = (await _auth.createUserWithEmailAndPassword(  // auth aan mone
               TaxiButton(
                  title: 'REGISTER',
                  color: Colors.blueGrey,
-                 onPressed: (){
+                 onPressed: ()async{
                    // korch data validation edkatte
 
                    
@@ -172,7 +198,14 @@ final User user = (await _auth.createUserWithEmailAndPassword(  // auth aan mone
                             showSnackBar('password must be at least 8 characters');
                             return;
                           }
-// net undo?
+                  // net undo?
+
+                  var connectivityResult = await Connectivity().checkConnectivity();
+                  if(connectivityResult != ConnectivityResult.mobile && connectivityResult != ConnectivityResult.wifi)
+                  {
+                      showSnackBar('No internet connectivity');
+                            return;
+                          }
 
                    //
                    registerUser();
