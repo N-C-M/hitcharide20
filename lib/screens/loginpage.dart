@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:workavane/screens/register.dart';
+import 'package:workavane/widgets/TaxiButton.dart';
 
 class LoginPage extends StatelessWidget {
 
@@ -73,28 +74,15 @@ class LoginPage extends StatelessWidget {
                           ),
 
                SizedBox(height: 40,),
-
-
-               RaisedButton(   // The login Button
-                 shape: new RoundedRectangleBorder(
-                   borderRadius: new BorderRadius.circular(25),
-                 ),
-                 color:Colors.blueGrey,
-                 textColor: Colors.white,
-                 child:Container(
-                   height:50,
-                   child: Center(
-                     child: Text(
-                       'LOGIN',
-                       style: TextStyle(fontSize: 18,
-                       fontFamily: 'Brand-Bold')
-                     ),
-                   ),
-                 ),
-                 
+               TaxiButton(
+                 title: 'LOGIN',
+                 color: Colors.blueGrey,
                  onPressed: (){
+                   
+                 },
+               )
 
-                 }),
+               
 
                 ],
               ) 

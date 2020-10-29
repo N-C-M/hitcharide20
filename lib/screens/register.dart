@@ -1,13 +1,48 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:workavane/widgets/TaxiButton.dart';
 
 import 'loginpage.dart';
 
 class Register extends StatelessWidget {
+    static const String id='register';
 
-  static const String id='regsiter';
+ final FirebaseAuth _auth= FirebaseAuth.instance;
+
+ var fullname=new TextEditingController();
+ var email =new TextEditingController();
+ var phno=new TextEditingController();
+ var password=new TextEditingController();
+
+ final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  void showSnackBar(String title){
+    final snackbar = SnackBar(
+      content: Text(title, textAlign: TextAlign.center, style: TextStyle(fontSize: 15),),
+    );
+    scaffoldKey.currentState.showSnackBar(snackbar);
+  }
+ 
+ void registerUser() async{
+
+final User user = (await _auth.createUserWithEmailAndPassword(  // auth aan monei correct aaitokke fill cheyne testingnu
+      email: email.text,
+      password: password.text,
+    )
+
+    ).user;
+    if(user != null){
+      print('regsitration successful');
+    }
+ }
+ 
+
+
     @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
@@ -37,8 +72,9 @@ class Register extends StatelessWidget {
               child:Column(
                 children: <Widget>[
 
-                      TextField(      // Full Name
-                            
+                      TextField(  
+                            // Full Name
+                            controller: fullname,
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
                                 labelText: 'Full Name',
@@ -55,8 +91,9 @@ class Register extends StatelessWidget {
                           SizedBox(height:10,),
 
 
-                      TextField(      // The Email Field
-                            
+                      TextField( 
+                             // The Email Field
+                            controller: email,
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
                                 labelText: 'Email address',
@@ -74,8 +111,9 @@ class Register extends StatelessWidget {
                 height:10,
               ),
 
-              TextField(      // Phone Number
-                            
+              TextField(  
+                    // Phone Number
+                            controller: phno,
                             keyboardType: TextInputType.phone,
                             decoration: InputDecoration(
                                 labelText: 'Phone Number',
@@ -92,8 +130,9 @@ class Register extends StatelessWidget {
               SizedBox(
                 height:10,
               ),
-              TextField(                  //The Password Field
-                            
+              TextField(       
+                           //The Password Field
+                            controller: password,
                             obscureText: true,
                             decoration: InputDecoration(
                                 labelText: 'Password',
@@ -109,28 +148,38 @@ class Register extends StatelessWidget {
                           ),
 
                SizedBox(height: 40,),
-
-
-               RaisedButton(   // The Register Button
-                 shape: new RoundedRectangleBorder(
-                   borderRadius: new BorderRadius.circular(25),
-                 ),
-                 color:Colors.blueGrey,
-                 textColor: Colors.white,
-                 child:Container(
-                   height:50,
-                   child: Center(
-                     child: Text(
-                       'REGISTER',
-                       style: TextStyle(fontSize: 18,
-                       fontFamily: 'Brand-Bold')
-                     ),
-                   ),
-                 ),
-                 
+              TaxiButton(
+                 title: 'REGISTER',
+                 color: Colors.blueGrey,
                  onPressed: (){
+                   // korch data validation edkatte
 
-                 }),
+                   
+                   if(fullname.text.length<3){
+                     showSnackBar('Provide a valid FullName');
+                     return;
+
+                   }
+                   if(phno.text.length<10){
+                   showSnackBar('Enter a valid Mobile Number');}
+
+                   if(!email.text.contains('@')){
+                            showSnackBar('Please provide a valid email address');
+                            return;
+                          }
+
+                   if(password.text.length < 8){
+                            showSnackBar('password must be at least 8 characters');
+                            return;
+                          }
+// net undo?
+
+                   //
+                   registerUser();
+                   
+                 },
+               )
+
 
                 ],
               ) 
@@ -153,3 +202,4 @@ class Register extends StatelessWidget {
     );
   }
 }
+
