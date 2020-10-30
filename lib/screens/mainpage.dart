@@ -7,6 +7,8 @@ import 'package:outline_material_icons/outline_material_icons.dart';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:workavane/dataprovider/appdata.dart';
 import 'package:workavane/helper/helperMethods.dart';
 import 'package:workavane/styles/styles.dart';
 import 'package:workavane/widgets/BrandDivider.dart';
@@ -53,7 +55,7 @@ class _MainPageState extends State<MainPage> {
     CameraPosition cp = new CameraPosition(target: pos, zoom: 14);
     map.animateCamera(CameraUpdate.newCameraPosition(cp));
 
-    String address= await HelperMethods.findCordinateAddress(position);
+    String address= await HelperMethods.findCordinateAddress(position,context);//make position
     print(address);
 
     // confirm location
@@ -313,7 +315,8 @@ class _MainPageState extends State<MainPage> {
                               children: <Widget>[
 
                                //Text((Provider.of<AppData>(context).pickupAddress.placeName != null)?Provider.of<AppData>(context).pickupAddress.longitude:'Add Home'),
-                                 Text('Changeam'), 
+                             Text((Provider.of<AppData>(context).pickupAddress.placeName!=null)?Provider.of<AppData>(context).pickupAddress.placeName:'Add Work'),
+                              Text('Add Work'),
                               SizedBox(height: 3,),
                               Text('Your office address',
                                 style: TextStyle(fontSize: 11, color: Colors.grey,),
