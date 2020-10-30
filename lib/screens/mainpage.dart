@@ -1,10 +1,14 @@
 import 'dart:async';
+import 'dart:io';
+import 'package:geolocator/geolocator.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 
-import 'package:firebase_database/firebase_database.dart';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:workavane/helper/helperMethods.dart';
+import 'package:workavane/styles/styles.dart';
 import 'package:workavane/widgets/BrandDivider.dart';
 
 class MainPage extends StatefulWidget {
@@ -16,8 +20,50 @@ class MainPage extends StatefulWidget {
 }
 class _MainPageState extends State<MainPage> {
   // This widget is the root of your application.
+    double searchSheetHeight = (Platform.isIOS) ? 300 : 275;
+
+       GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+
     Completer<GoogleMapController> _controller = Completer();
     GoogleMapController map;
+    double mapBottomPadding=0;
+
+    var geoLocator = Geolocator();//Fetch Riders Position
+    Position currentPosition;
+
+   /* void setupPositionLocator() async {
+
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    currentPosition = position;
+    LatLng pos = LatLng(position.latitude, position.longitude);
+    CameraPosition cp = new CameraPosition(target: pos, zoom: 14);
+        map.animateCamera(CameraUpdate.newCameraPosition(cp));
+
+    
+
+
+  }*/
+   
+
+  void setupPositionLocator() async {
+    Position position = await geoLocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.bestForNavigation);
+    currentPosition = position;
+    
+    LatLng pos = LatLng(position.latitude, position.longitude);
+    CameraPosition cp = new CameraPosition(target: pos, zoom: 14);
+    map.animateCamera(CameraUpdate.newCameraPosition(cp));
+
+    String address= await HelperMethods.findCordinateAddress(position);
+    print(address);
+
+    // confirm location
+    
+
+  }
+  
+ 
+
+  
 
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
@@ -30,22 +76,140 @@ class _MainPageState extends State<MainPage> {
     
 
     return Scaffold(
+      key:scaffoldKey,
+
+      drawer: Container( // Side Navigation
+        width: 250,
+        color: Colors.white,
+        child:Drawer(
+          child: ListView(
+            padding: EdgeInsets.all(0),
+            children: <Widget>[
+
+              Container(
+                color: Colors.white,
+                child:DrawerHeader(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                  ),
+                  child:Row(
+                    children: <Widget>[
+                      Image.asset('images/user_icon.png', height: 60, width: 60,),
+                      SizedBox(width: 15,),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text('Ningal Ith Kanu', style: TextStyle(fontSize: 15, fontFamily: 'Brand-Bold'),),
+                          SizedBox(height: 5,),
+                          Text('View Profile'),
+                        ],
+                      )
+                      
+
+                    ],
+                  ),
+
+                ) ,
+                ),
+                BrandDivider(),
+                SizedBox(height: 10,),
+
+              ListTile(
+                leading: Icon(OMIcons.cardGiftcard),
+                title: Text('Free Rides', style: kDrawerItemStyle,),
+              ),
+
+              ListTile(
+                leading: Icon(OMIcons.creditCard),
+                title: Text('Payments', style: kDrawerItemStyle,),
+              ),
+
+              ListTile(
+                leading: Icon(OMIcons.history),
+                title: Text('Ride History', style: kDrawerItemStyle,),
+              ),
+
+              ListTile(
+                leading: Icon(OMIcons.contactSupport),
+                title: Text('Support', style: kDrawerItemStyle,),
+              ),
+
+              ListTile(
+                leading: Icon(OMIcons.info),
+                title: Text('About', style: kDrawerItemStyle,),
+              ),
+
+
+            ],
+          ),
+          
+          ),
+      ),
+
+
+
+
       
       body: Stack(
         children: <Widget>[
 
         GoogleMap(
+          padding: EdgeInsets.only(bottom:mapBottomPadding),
           mapType: MapType.normal,
           myLocationButtonEnabled: true,
           initialCameraPosition: _kGooglePlex,
+          myLocationEnabled: true,
+            zoomGesturesEnabled: true,
+            zoomControlsEnabled: true,
 
           onMapCreated:(GoogleMapController controller)
           {
             _controller.complete(controller);
             map=controller;
 
+            setState(() {
+              mapBottomPadding=(Platform.isAndroid) ? 280 : 270;
+            });
+
+              setupPositionLocator();
           } ,
           
+          ),
+
+          // Menu Vende Menu
+           Positioned(
+            top: 44,
+            left: 20,
+            child: GestureDetector(
+              onTap: (){
+                
+                  scaffoldKey.currentState.openDrawer();
+                
+                
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 5.0,
+                      spreadRadius: 0.5,
+                      offset: Offset(
+                        0.7,
+                        0.7,
+                      )
+                    )
+                  ]
+                ),
+                child: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  radius: 20,
+                  child: Icon(Icons.menu, color: Colors.black87,),
+                ),
+              ),
+            ),
           ),
           Positioned(
             left: 0,
@@ -53,7 +217,7 @@ class _MainPageState extends State<MainPage> {
             bottom: 0,
 
             child: Container(
-              height: 240,
+              height: searchSheetHeight,
               decoration: BoxDecoration(
                              color: Colors.white,
                              borderRadius: BorderRadius.only(topLeft:Radius.circular(15),topRight: Radius.circular(15),),
@@ -133,10 +297,10 @@ class _MainPageState extends State<MainPage> {
                               ],
                             )
                           ],),
-                          SizedBox(height:6,),
+                          SizedBox(height:7,),
 
                           BrandDivider(),
-                                                    SizedBox(height:3,),
+                                                    SizedBox(height:5,),
 
 
                           Row(children: [
@@ -147,7 +311,9 @@ class _MainPageState extends State<MainPage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text('Add Work'),
+
+                               //Text((Provider.of<AppData>(context).pickupAddress.placeName != null)?Provider.of<AppData>(context).pickupAddress.longitude:'Add Home'),
+                                 Text('Changeam'), 
                               SizedBox(height: 3,),
                               Text('Your office address',
                                 style: TextStyle(fontSize: 11, color: Colors.grey,),

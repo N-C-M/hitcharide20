@@ -4,10 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:workavane/main.dart';
 import 'package:workavane/screens/mainpage.dart';
 import 'package:workavane/screens/register.dart';
-import 'package:workavane/widgets/ProgressDialog.dart';
 import 'package:workavane/widgets/TaxiButton.dart';
 
 class LoginPage extends StatefulWidget {
