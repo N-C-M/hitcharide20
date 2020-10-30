@@ -61,8 +61,6 @@ import 'package:provider/provider.dart';
 
      placeAddress = response['results'][0]['formatted_address'];
 
-
-     //comment following comment
      Address pickupAddress=new Address();
 
      pickupAddress.longitude=position.longitude;

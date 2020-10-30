@@ -314,9 +314,9 @@ class _MainPageState extends State<MainPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
 
-                               //Text((Provider.of<AppData>(context).pickupAddress.placeName != null)?Provider.of<AppData>(context).pickupAddress.longitude:'Add Home'),
-                             Text((Provider.of<AppData>(context).pickupAddress.placeName!=null)?Provider.of<AppData>(context).pickupAddress.placeName:'Add Work'),
-                              Text('Add Work'),
+                               Text((Provider.of<AppData>(context).pickupAddress.placeName != null)?Provider.of<AppData>(context).pickupAddress.longitude:'Add Home'),
+
+                            
                               SizedBox(height: 3,),
                               Text('Your office address',
                                 style: TextStyle(fontSize: 11, color: Colors.grey,),
