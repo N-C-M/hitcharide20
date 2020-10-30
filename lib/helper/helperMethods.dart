@@ -1,7 +1,11 @@
 import 'package:connectivity/connectivity.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:workavane/datamodels/address.dart';
+import 'package:workavane/dataprovider/appdata.dart';
 import 'package:workavane/helper/RequestHelper.dart';
 import 'package:workavane/globalvariables.dart';
+import 'package:provider/provider.dart';
+
 
 
 /*class HelperMethods{
@@ -56,6 +60,14 @@ import 'package:workavane/globalvariables.dart';
    if(response != 'failed'){
 
      placeAddress = response['results'][0]['formatted_address'];
+
+     Address pickupAddress=new Address();
+
+     pickupAddress.longitude=position.longitude;
+     pickupAddress.latitude=position.latitude;
+     pickupAddress.placeName= placeAddress;
+     Provider.of<AppData>(context, listen: false).updatePickupAddress(pickupAddress);
+
 
    }
 

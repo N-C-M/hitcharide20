@@ -1,5 +1,7 @@
  
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:workavane/dataprovider/appdata.dart';
 import 'package:workavane/screens/loginpage.dart';
 
 import 'dart:async';
@@ -38,18 +40,21 @@ class MyApp extends StatelessWidget {
   @override
  Widget build(BuildContext context) {
 
-    return MaterialApp(
-      theme: ThemeData(
-        fontFamily: 'Brand-Regular',
-        primarySwatch: Colors.blue,
-      ),
-       initialRoute : MainPage.id,
-       routes:{
-          Register.id: (context) => Register(),
-          LoginPage.id: (context) => LoginPage(),
-          MainPage.id: (context) => MainPage(),
-        },
-      );
+    return ChangeNotifierProvider(
+          create: (context) => AppData(),
+          child: MaterialApp(
+        theme: ThemeData(
+          fontFamily: 'Brand-Regular',
+          primarySwatch: Colors.blue,
+        ),
+         initialRoute : MainPage.id,
+         routes:{
+            Register.id: (context) => Register(),
+            LoginPage.id: (context) => LoginPage(),
+            MainPage.id: (context) => MainPage(),
+          },
+        ),
+    );
     
   }
 }
