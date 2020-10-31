@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -39,6 +40,7 @@ class _MainPageState extends State<MainPage > with TickerProviderStateMixin{
     GoogleMapController map;
     double mapBottomPadding=0;
     double rideDetailsSheetHeight = 0;
+    double requestSheetHeight=0;
 
 
     List<LatLng> polylineCoordinates = [];
@@ -101,6 +103,20 @@ class _MainPageState extends State<MainPage > with TickerProviderStateMixin{
        
      });
   }
+
+  void showRequestingSheet(){
+    setState(() {
+
+      rideDetailsSheetHeight = 0;
+      requestSheetHeight = (Platform.isAndroid) ? 195 : 220;
+      mapBottomPadding = (Platform.isAndroid) ? 200 : 190;
+      drawerCanOpen = true;
+
+    });
+
+    //createRideRequest();
+  }
+
    
   @override
   Widget build(BuildContext context) {
@@ -473,6 +489,7 @@ class _MainPageState extends State<MainPage > with TickerProviderStateMixin{
                           color:Colors.blueGrey,
                           
                           onPressed: (){
+                            showRequestingSheet();
 
                           },
                         ),
@@ -484,6 +501,94 @@ class _MainPageState extends State<MainPage > with TickerProviderStateMixin{
         ),
               ),
       ),
+    
+    Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: AnimatedSize(
+              vsync: this,
+              duration: new Duration(milliseconds: 150),
+              curve: Curves.easeIn,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 15.0, // soften the shadow
+                      spreadRadius: 0.5, //extend the shadow
+                      offset: Offset(
+                        0.7, // Move to right 10  horizontally
+                        0.7, // Move to bottom 10 Vertically
+                      ),
+                    )
+                  ],
+                ),
+                height: requestSheetHeight,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 18),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+
+                      SizedBox(height: 10,),
+
+                      SizedBox(
+                        width: double.infinity,
+                        child: TextLiquidFill(
+                        text: 'Searching Nearby Rides...',
+                        waveColor: BrandColors.colorTextSemiLight,
+                        boxBackgroundColor: Colors.white,
+                        textStyle: TextStyle(
+                          color: BrandColors.colorText,
+                          fontSize: 22.0,
+                          fontFamily: 'Brand-Bold'
+                        ),
+                        boxHeight: 40.0,
+                      ),
+                      ),
+
+                      SizedBox(height: 20,),
+
+                      GestureDetector(
+                        onTap: (){
+                         // cancelRequest();
+                         // resetApp();
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(25),
+                            border: Border.all(width: 1.0, color: BrandColors.colorLightGrayFair),
+
+                          ),
+                          child: Icon(Icons.close, size: 25,),
+                        ),
+                      ),
+
+                      SizedBox(height: 10,),
+
+                      Container(
+                        width: double.infinity,
+                        child: Text(
+                          'Cancel Search',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 12),
+                        ),
+                      ),
+
+
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+    
     ],
   ),
     );
