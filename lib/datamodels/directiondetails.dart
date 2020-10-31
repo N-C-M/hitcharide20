@@ -7,10 +7,10 @@ class DirectionDetails{
 
   DirectionDetails({
     this.distanceText,
-    this.distanceValue,
-    this.durationText,
-    this.durationValue,
-    this.encodedPoints,
+    this.distanceValue=0,
+    this.durationText='AB',
+    this.durationValue=0,
+    this.encodedPoints='ABC',
   });
 
 }

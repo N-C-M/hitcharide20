@@ -101,6 +101,21 @@ import 'package:provider/provider.dart';
    directionDetails.encodedPoints = response['routes'][0]['overview_polyline']['points'];
 
    return directionDetails;
+
+  }
+
+  static int estimateFares (DirectionDetails details){
+   // per km = $0.3,
+    // per minute = $0.2,
+    // base fare = $3,
+
+    double baseFare = 3;
+    double distanceFare = (details.distanceValue/1000) * 0.3;
+    double timeFare = (details.durationValue / 60) * 0.2;
+
+    double totalFare = baseFare + distanceFare + timeFare;
+
+    return totalFare.truncate();
   }
 
 

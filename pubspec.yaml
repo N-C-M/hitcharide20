@@ -40,7 +40,14 @@ dependencies:
   geolocator: ^5.3.2
   http: ^0.12.2
 
+  flutter_polyline_points: ^0.2.1
+
   provider: ^4.3.2+2
+  font_awesome_flutter: ^8.10.0
+
+
+
+
 
 
 
