@@ -10,6 +10,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:workavane/dataprovider/appdata.dart';
 import 'package:workavane/helper/helperMethods.dart';
+import 'package:workavane/screens/searchride.dart';
 import 'package:workavane/styles/styles.dart';
 import 'package:workavane/widgets/BrandDivider.dart';
 
@@ -56,7 +57,7 @@ class _MainPageState extends State<MainPage> {
     map.animateCamera(CameraUpdate.newCameraPosition(cp));
 
     String address= await HelperMethods.findCordinateAddress(position,context);//make position
-    print(address);
+    //print(address);
 
     // confirm location
     
@@ -250,38 +251,45 @@ class _MainPageState extends State<MainPage> {
                             Text('Where are you going?', style: TextStyle(fontSize: 18, fontFamily: 'Brand-Bold'),),
 
                             SizedBox(height:20.0,),
-                            Container(
-                              decoration: BoxDecoration(
-                                color:Colors.white,
-                                borderRadius:BorderRadius.circular(4),
-                                boxShadow: [
-                                  BoxShadow(
-                                 color: Colors.black26,
-                                 blurRadius:5.0,
-                                 spreadRadius: 0.5,
-                                 offset: Offset(
-                                 0.7,
-                                  0.7,
-                                    )
+                            GestureDetector(
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>SearchPage(),
+                                ));
+                              },
 
-                               ),
+                                child: Container(
+                                decoration: BoxDecoration(
+                                  color:Colors.white,
+                                  borderRadius:BorderRadius.circular(4),
+                                  boxShadow: [
+                                    BoxShadow(
+                                   color: Colors.black26,
+                                   blurRadius:5.0,
+                                   spreadRadius: 0.5,
+                                   offset: Offset(
+                                   0.7,
+                                    0.7,
+                                      )
 
-                              
-                                ],
-                              ),
-                              child:Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(children: <Widget>[
-                                  Icon(Icons.search, color: Colors.blueAccent,),
-                                  SizedBox(width: 10,),
-                                  Text('Search Destination'),
+                                 ),
+
+                                
+                                  ],
+                                ),
+                                child:Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(children: <Widget>[
+                                    Icon(Icons.search, color: Colors.blueAccent,),
+                                    SizedBox(width: 10,),
+                                    Text('Search Destination'),
 
 
-                                ],),
-                              ) ,
+                                  ],),
+                                ) ,
 
-                              
+                                
                           ),
+                            ),
                           SizedBox(height:22,),
                           Row(children: [
                             Icon(OMIcons.home,color: Colors.grey,),
@@ -314,8 +322,7 @@ class _MainPageState extends State<MainPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
 
-                               Text((Provider.of<AppData>(context).pickupAddress.placeName != null)?Provider.of<AppData>(context).pickupAddress.longitude:'Add Home'),
-
+                                  Text('Add Work'),
                             
                               SizedBox(height: 3,),
                               Text('Your office address',

@@ -44,7 +44,7 @@ import 'package:provider/provider.dart';
 
   
 
- static Future<String> findCordinateAddress(Position position, context) async {
+ static Future<String> findCordinateAddress(Position position,context) async {
 
    String placeAddress = '';
 
@@ -66,6 +66,9 @@ import 'package:provider/provider.dart';
      pickupAddress.longitude=position.longitude;
      pickupAddress.latitude=position.latitude;
      pickupAddress.placeName= placeAddress;
+     //print('ooo');
+     print(pickupAddress.placeName);
+     
      Provider.of<AppData>(context, listen: false).updatePickupAddress(pickupAddress);
 
 
