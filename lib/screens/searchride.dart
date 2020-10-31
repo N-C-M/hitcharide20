@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:workavane/brand_colors.dart';
 import 'package:workavane/datamodels/prediction.dart';
@@ -42,7 +41,7 @@ class _SearchPageState extends State<SearchPage> {
       if(response == 'failed'){
         return;
       }
-      print(response);
+      //print(response);
 
       if(response['status'] == 'OK'){
         var predictionJson = response['predictions'];

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:workavane/dataprovider/appdata.dart';
+
 import 'package:workavane/helper/helperMethods.dart';
 import 'package:workavane/screens/searchride.dart';
 import 'package:workavane/styles/styles.dart';
@@ -252,9 +253,14 @@ class _MainPageState extends State<MainPage> {
 
                             SizedBox(height:20.0,),
                             GestureDetector(
-                              onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=>SearchPage(),
-                                ));
+                              onTap: ()async{
+                                var response=await Navigator.push(context, MaterialPageRoute(builder: (context)=>SearchPage(),
+                                )
+                                );
+                                if(response=='getDirection'){
+                                  await getDirection();
+                                }
+
                               },
 
                                 child: Container(
@@ -345,4 +351,17 @@ class _MainPageState extends State<MainPage> {
     );
 
   }
+    Future<void> getDirection() async {
+
+      var pickup = Provider.of<AppData>(context, listen: false).pickupAddress;
+    var destination =  Provider.of<AppData>(context, listen: false).destinationAddress;
+
+    var pickLatLng = LatLng(pickup.latitude, pickup.longitude);
+    var destinationLatLng = LatLng(destination.latitude, destination.longitude);
+
+        var thisDetails = await HelperMethods.getDirectionDetails(pickLatLng, destinationLatLng);
+     print(thisDetails.encodedPoints);
+
+}
+
 }
