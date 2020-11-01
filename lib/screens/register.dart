@@ -9,6 +9,7 @@ import 'package:workavane/widgets/TaxiButton.dart';
 import 'loginpage.dart';
 
 class Register extends StatefulWidget {
+  
     static const String id='register';
 
   @override
@@ -43,7 +44,7 @@ class _RegisterState extends State<Register> {
       builder: (BuildContext context) => ProgressDialog(status: 'Registering you in',),
     );*/
 
-final User user = (await _auth.createUserWithEmailAndPassword(  // auth aan monei correct aaitokke fill cheyne testingnu
+final FirebaseUser user = (await _auth.createUserWithEmailAndPassword(  // auth aan monei correct aaitokke fill cheyne testingnu
       email: email.text,
       password: password.text,
     ).catchError((ex){

@@ -1,8 +1,11 @@
 import 'package:connectivity/connectivity.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:workavane/datamodels/address.dart';
 import 'package:workavane/datamodels/directiondetails.dart';
+import 'package:workavane/datamodels/user.dart';
 import 'package:workavane/dataprovider/appdata.dart';
 import 'package:workavane/helper/RequestHelper.dart';
 import 'package:workavane/globalvariables.dart';
@@ -43,6 +46,24 @@ import 'package:provider/provider.dart';
 
   }*/
   class HelperMethods{
+
+    static void getCurrentUserInfo() async{
+
+    FirebaseUser currentFirebaseUser = await FirebaseAuth.instance.currentUser();// Firebaseuser or USer nokk
+    String userid = currentFirebaseUser.uid;
+
+    DatabaseReference userRef = FirebaseDatabase.instance.reference().child('users/$userid');
+    userRef.once().then((DataSnapshot snapshot){
+
+      if(snapshot.value != null){
+        currentUserInfo = User.fromSnapshot(snapshot);
+        print('my name is ${currentUserInfo.fullName}');
+      }
+
+    }
+    );
+  }
+  
 
   
 

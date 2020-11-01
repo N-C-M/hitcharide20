@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -55,6 +56,8 @@ class _MainPageState extends State<MainPage > with TickerProviderStateMixin{
   DirectionDetails tripDirectionDetails;
 
     bool drawerCanOpen = true;
+
+  DatabaseReference rideRef;
 
 
    /* void setupPositionLocator() async {
@@ -114,8 +117,15 @@ class _MainPageState extends State<MainPage > with TickerProviderStateMixin{
 
     });
 
-    //createRideRequest();
+    createRideRequest();
   }
+
+  @override
+   void initState() {
+    super.initState();
+    HelperMethods.getCurrentUserInfo();
+  }
+
 
    
   @override
@@ -554,8 +564,8 @@ class _MainPageState extends State<MainPage > with TickerProviderStateMixin{
 
                       GestureDetector(
                         onTap: (){
-                         // cancelRequest();
-                         // resetApp();
+                          cancelRequest();
+                          resetApp();
                         },
                         child: Container(
                           height: 50,
@@ -710,6 +720,134 @@ class _MainPageState extends State<MainPage > with TickerProviderStateMixin{
 
 
 }
+void createRideRequest(){
+
+    rideRef = FirebaseDatabase.instance.reference().child('rideRequest').push();//creating the table ride request
+
+    var pickup = Provider.of<AppData>(context, listen: false).pickupAddress;
+    var destination = Provider.of<AppData>(context, listen: false).destinationAddress;
+
+    Map pickupMap = {
+      'latitude': pickup.latitude.toString(),
+      'longitude': pickup.longitude.toString(),
+    };
+
+    Map destinationMap = {
+      'latitude': destination.latitude.toString(),
+      'longitude': destination.longitude.toString(),
+    };
+
+    Map rideMap = {
+      'created_at': DateTime.now().toString(),
+      'rider_name': currentUserInfo.fullName,
+      'rider_phone': currentUserInfo.phone,
+      'pickup_address' : pickup.placeName,
+      'destination_address': destination.placeName,
+      'location': pickupMap,
+      'destination': destinationMap,
+      'payment_method': 'card',
+      'driver_id': 'waiting',
+    };
+
+    rideRef.set(rideMap);
+
+    /*rideSubscription = rideRef.onValue.listen((event) async {
+
+      //check for null snapshot
+      if(event.snapshot.value == null){
+        return;
+      }
+
+      //get car details
+      if(event.snapshot.value['car_details'] != null){
+        setState(() {
+          driverCarDetails = event.snapshot.value['car_details'].toString();
+        });
+      }
+
+      // get driver name
+      if(event.snapshot.value['driver_name'] != null){
+        setState(() {
+          driverFullName = event.snapshot.value['driver_name'].toString();
+        });
+      }
+
+      // get driver phone number
+      if(event.snapshot.value['driver_phone'] != null){
+        setState(() {
+          driverPhoneNumber = event.snapshot.value['driver_phone'].toString();
+        });
+      }
+
+
+      //get and use driver location updates
+      if(event.snapshot.value['driver_location'] != null){
+
+        double driverLat = double.parse(event.snapshot.value['driver_location']['latitude'].toString());
+        double driverLng = double.parse(event.snapshot.value['driver_location']['longitude'].toString());
+        LatLng driverLocation = LatLng(driverLat, driverLng);
+
+        if(status == 'accepted'){
+          updateToPickup(driverLocation);
+        }
+        else if(status == 'ontrip'){
+          updateToDestination(driverLocation);
+        }
+        else if(status == 'arrived'){
+          setState(() {
+            tripStatusDisplay = 'Driver has arrived';
+          });
+        }
+
+      }
+
+
+      if(event.snapshot.value['status'] != null){
+        status = event.snapshot.value['status'].toString();
+      }
+
+      if(status == 'accepted'){
+        showTripSheet();
+        Geofire.stopListener();
+        removeGeofireMarkers();
+      }
+
+      if(status == 'ended'){
+
+        if(event.snapshot.value['fares'] != null) {
+
+          int fares = int.parse(event.snapshot.value['fares'].toString());
+
+          var response = await showDialog(
+              context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) => CollectPayment(paymentMethod: 'cash', fares: fares,),
+          );
+
+          if(response == 'close'){
+            rideRef.onDisconnect();
+            rideRef = null;
+            rideSubscription.cancel();
+            rideSubscription = null;
+            resetApp();
+          }
+
+        }
+      }
+
+    });*/
+
+  }
+   void cancelRequest(){
+    rideRef.remove();
+
+    //setState(() {
+      //appState = 'NORMAL';
+    //});
+  }
+
+
+
 resetApp(){
 
     setState(() {
@@ -719,7 +857,7 @@ resetApp(){
       _Markers.clear();
       _Circles.clear();
       rideDetailsSheetHeight = 0;
-      //requestingSheetHeight = 0;
+      requestSheetHeight = 0;
       //tripSheetHeight = 0;
       searchSheetHeight = (Platform.isAndroid) ? 275 : 300;
       mapBottomPadding = (Platform.isAndroid) ? 280 : 270;

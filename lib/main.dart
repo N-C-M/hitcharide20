@@ -1,7 +1,9 @@
  
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workavane/dataprovider/appdata.dart';
+import 'package:workavane/screens/driverrider.dart';
 import 'package:workavane/screens/loginpage.dart';
 
 import 'dart:async';
@@ -13,7 +15,7 @@ import 'package:workavane/screens/register.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final FirebaseApp app = await Firebase.initializeApp(
+  /*final FirebaseApp app = await FirebaseApp.initializeApp(         //.configure nop initializeAPP
     name: 'db2',
     options: Platform.isIOS || Platform.isMacOS
         ? FirebaseOptions(
@@ -30,7 +32,23 @@ Future<void> main() async {
             projectId: 'finaltry-622c5',
             databaseURL: 'https://finaltry-622c5.firebaseio.com',
           ),
+  );*/
+
+  final FirebaseApp app = await FirebaseApp.configure(
+    name: 'db2',
+    options: Platform.isIOS
+        ? const FirebaseOptions(
+      googleAppID: '1:151917049307:android:eb39f37f63e7045ff0e3fe',
+      gcmSenderID: '169450788828',
+      databaseURL: 'https://finaltry-622c5.firebaseio.com',
+    )
+        : const FirebaseOptions(
+      googleAppID: '1:151917049307:android:eb39f37f63e7045ff0e3fe',
+      apiKey: 'AIzaSyAzLpKCifErLVEp69BQvV2y2morxyM3lms',
+      databaseURL: 'https://finaltry-622c5.firebaseio.com',
+    ),
   );
+
   runApp(MaterialApp(home: MyApp(),));
 }
 
@@ -47,8 +65,9 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Brand-Regular',
           primarySwatch: Colors.blue,
         ),
-         initialRoute : MainPage.id,
+         initialRoute : DriverRider.id,// MainPAge arnn
          routes:{
+            DriverRider.id:(context)=>DriverRider(),
             Register.id: (context) => Register(),
             LoginPage.id: (context) => LoginPage(),
             MainPage.id: (context) => MainPage(),

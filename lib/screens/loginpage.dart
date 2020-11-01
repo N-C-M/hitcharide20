@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
     );*/
    
 
-    final User user = (await _auth.signInWithEmailAndPassword(
+    final FirebaseUser user = (await _auth.signInWithEmailAndPassword(//User akkanm
       email: emailController.text,
       password: passwordController.text,
     ).catchError((ex){
