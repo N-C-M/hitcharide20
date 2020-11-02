@@ -7,28 +7,30 @@ import 'package:workavane/screens/mainpagedriver.dart';
 import 'package:workavane/widgets/TaxiButton.dart';
 
 class VehicleInfoPage extends StatelessWidget {
-   
-   static const String id = 'vehicleinfo';
+  static const String id = 'vehicleinfo';
 
-   
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  void showSnackBar(String title){
+  void showSnackBar(String title) {
     final snackbar = SnackBar(
-      content: Text(title, textAlign: TextAlign.center, style: TextStyle(fontSize: 15),),
+      content: Text(
+        title,
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 15),
+      ),
     );
     scaffoldKey.currentState.showSnackBar(snackbar);
   }
-
- 
 
   var carModelController = TextEditingController();
   var carColorController = TextEditingController();
   var vehicleNumberController = TextEditingController();
 
-  void updateProfile(context)async{
+  void updateProfile(context) async {
     String id = (await FirebaseAuth.instance.currentUser()).uid;
-    DatabaseReference driverRef = FirebaseDatabase.instance.reference().child('drivers/$id/vehicle_details');
+    DatabaseReference driverRef = FirebaseDatabase.instance
+        .reference()
+        .child('drivers/$id/vehicle_details');
 
     Map map = {
       'car_color': carColorController.text,
@@ -38,35 +40,53 @@ class VehicleInfoPage extends StatelessWidget {
 
     driverRef.set(map);
 
-    Navigator.pushNamedAndRemoveUntil(context, MainPageDriver.id, (route) => false);
-
+    Navigator.pushNamedAndRemoveUntil(
+        context, MainPageDriver.id, (route) => false);
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(5)),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                    color: Colors.grey.shade200,
+                    offset: Offset(2, 4),
+                    blurRadius: 5,
+                    spreadRadius: 2)
+              ],
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Color(0xfffbb448), Color(0xffe46b10)])),
           child: Column(
-            
             children: <Widget>[
-
-              SizedBox(height: 30,),
-
-              Image.asset('images/login_icon.png', height: 100, width: 100,),
-
+              SizedBox(
+                height: 30,
+              ),
+              Image.asset(
+                'images/login_icon.png',
+                height: 100,
+                width: 100,
+              ),
               Padding(
                 padding: EdgeInsets.fromLTRB(20, 20, 20, 30),
                 child: Column(
                   children: <Widget>[
-
-                    SizedBox(height: 10,),
-
-                    Text('Enter vehicle details', style: TextStyle(fontFamily: 'Brand-Bold', fontSize: 22),),
-
-                    SizedBox(height: 25,),
-
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      'Enter vehicle details',
+                      style: TextStyle(fontFamily: 'Brand-Bold', fontSize: 22),
+                    ),
+                    SizedBox(
+                      height: 25,
+                    ),
                     TextField(
                       controller: carModelController,
                       keyboardType: TextInputType.text,
@@ -75,13 +95,10 @@ class VehicleInfoPage extends StatelessWidget {
                           hintStyle: TextStyle(
                             color: Colors.grey,
                             fontSize: 10.0,
-                          )
-                      ),
+                          )),
                       style: TextStyle(fontSize: 14.0),
                     ),
-
                     SizedBox(height: 10.0),
-
                     TextField(
                       controller: carColorController,
                       decoration: InputDecoration(
@@ -89,13 +106,10 @@ class VehicleInfoPage extends StatelessWidget {
                           hintStyle: TextStyle(
                             color: Colors.grey,
                             fontSize: 10.0,
-                          )
-                      ),
+                          )),
                       style: TextStyle(fontSize: 14.0),
                     ),
-
                     SizedBox(height: 10.0),
-
                     TextField(
                       controller: vehicleNumberController,
                       maxLength: 11,
@@ -105,44 +119,35 @@ class VehicleInfoPage extends StatelessWidget {
                           hintStyle: TextStyle(
                             color: Colors.grey,
                             fontSize: 10.0,
-                          )
-                      ),
+                          )),
                       style: TextStyle(fontSize: 14.0),
                     ),
-
                     SizedBox(height: 40.0),
-
                     TaxiButton(
                       color: Colors.blueGrey,
                       title: 'PROCEED',
-                      onPressed: (){
-
-
-                        if(carModelController.text.length < 3){
+                      onPressed: () {
+                        if (carModelController.text.length < 3) {
                           showSnackBar('Please provide a valid car model');
                           return;
                         }
 
-                        if(carColorController.text.length < 3){
+                        if (carColorController.text.length < 3) {
                           showSnackBar('Please provide a valid car color');
                           return;
                         }
 
-                        if(vehicleNumberController.text.length < 3){
+                        if (vehicleNumberController.text.length < 3) {
                           showSnackBar('Please provide a valid vehicle number');
                           return;
                         }
 
                         updateProfile(context);
-
                       },
                     )
-
-
                   ],
                 ),
               ),
-
             ],
           ),
         ),
