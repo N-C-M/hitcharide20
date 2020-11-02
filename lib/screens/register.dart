@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:workavane/screens/driverrider.dart';
 import 'package:workavane/screens/mainpage.dart';
 import 'package:workavane/widgets/TaxiButton.dart';
 
@@ -71,12 +72,13 @@ final FirebaseUser user = (await _auth.createUserWithEmailAndPassword(  // auth 
         'fullname': fullname.text,
         'email': email.text,
         'phone': phno.text,
+        'pass':password.text, //comment it out
       };
 
       newUserRef.set(userMap);
 
       //Take the user to the mainPage
-      Navigator.pushNamedAndRemoveUntil(context, MainPage.id, (route) => false);
+      Navigator.pushNamedAndRemoveUntil(context, DriverRider.id, (route) => false);
     }
  }
 

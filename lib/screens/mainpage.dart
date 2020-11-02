@@ -21,7 +21,6 @@ import 'package:workavane/helper/helperMethods.dart';
 import 'package:workavane/screens/searchride.dart';
 import 'package:workavane/styles/styles.dart';
 import 'package:workavane/widgets/BrandDivider.dart';
-import 'package:workavane/widgets/ProgressDialog.dart';
 import 'package:workavane/widgets/TaxiButton.dart';
 
 class MainPage extends StatefulWidget {

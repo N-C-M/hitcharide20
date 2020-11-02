@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:workavane/brand_colors.dart';
+import 'package:workavane/screens/mainpage.dart';
+
+import 'package:workavane/screens/vehicleinfo.dart';
 
 class DriverRider extends StatefulWidget {
 
@@ -29,7 +32,9 @@ class _DriverRiderState extends State<DriverRider> {
               child: FlatButton(  
                 color: BrandColors.colorGreen,
                 child: Text('Driver', style: TextStyle(fontSize: 20.0,color:Colors.white ),),  
-                onPressed: () {},  
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>VehicleInfoPage()));
+                },  
               ),  
             ),  
             Container(  
@@ -38,7 +43,10 @@ class _DriverRiderState extends State<DriverRider> {
                 child: Text('Rider', style: TextStyle(fontSize: 20.0),),  
                 color: BrandColors.colorGreen,  
                 textColor: Colors.white,  
-                onPressed: () {},  
+                onPressed: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>MainPage()));
+
+                },  
               ),  
             ),  
           ]  

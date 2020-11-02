@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:workavane/screens/driverrider.dart';
 import 'package:workavane/screens/mainpage.dart';
 import 'package:workavane/screens/register.dart';
 import 'package:workavane/widgets/TaxiButton.dart';
@@ -64,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
         if(snapshot.value != null){     
 
           //Navigator.pop(context);
-          Navigator.pushNamedAndRemoveUntil(context, MainPage.id, (route) => false);
+          Navigator.pushNamedAndRemoveUntil(context, DriverRider.id, (route) => false);
         }
       });
 
@@ -87,12 +88,12 @@ class _LoginPageState extends State<LoginPage> {
                   alignment: Alignment.center,
                   height: 100.0,
                   width: 100.0,
-                  image: AssetImage('images/logo.png'),
+                  image: AssetImage('images/login_icon.png'),
                 ),
 
                 SizedBox(height: 40,),
 
-                Text('Sign In as a Rider',
+                Text('Sign In',
                 textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 25, fontFamily: 'Brand-Bold'),
                 ),

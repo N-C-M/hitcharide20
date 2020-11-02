@@ -45,6 +45,8 @@ dependencies:
   provider: ^4.3.2+2
   font_awesome_flutter: ^8.10.0
   animated_text_kit: ^2.5.1
+  flutter_geofire: ^1.0.3
+
 
 
 
