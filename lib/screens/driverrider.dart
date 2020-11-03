@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:workavane/brand_colors.dart';
 import 'package:workavane/screens/mainpage.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:workavane/screens/vehicleinfo.dart';
 
@@ -13,33 +11,7 @@ class DriverRider extends StatefulWidget {
 }
 
 class _DriverRiderState extends State<DriverRider> {
-  Widget _submitButton() {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MainPage()));
-      },
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(vertical: 13),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Color(0xffdf8e33).withAlpha(100),
-                  offset: Offset(2, 4),
-                  blurRadius: 8,
-                  spreadRadius: 2)
-            ],
-            color: Colors.white),
-        child: Text(
-          'Rider',
-          style: TextStyle(fontSize: 20, color: Color(0xfff7892b)),
-        ),
-      ),
-    );
-  }
+  
 
 
   Widget _submitButton() {

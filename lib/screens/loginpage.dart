@@ -4,7 +4,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:workavane/screens/driverrider.dart';
-import 'package:workavane/screens/mainpage.dart';
 import 'package:workavane/screens/register.dart';
 import 'package:workavane/widgets/TaxiButton.dart';
 

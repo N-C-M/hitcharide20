@@ -47,9 +47,8 @@ dependencies:
   animated_text_kit: ^2.5.1
   flutter_geofire: ^1.0.3
   google_fonts: ^1.1.1
+  firebase_messaging: ^6.0.16
 
-
-  google_fonts: ^1.1.1
 
 
 

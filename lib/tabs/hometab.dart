@@ -1,5 +1,7 @@
 import 'dart:async';
 
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';
@@ -7,8 +9,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:workavane/brand_colors.dart';
 import 'package:workavane/globalvariables.dart';
+import 'package:workavane/helper/pushnotif.dart';
 import 'package:workavane/widgets/AvailabilityButton.dart';
-import 'package:workavane/widgets/TaxiButton.dart';
 import 'package:workavane/widgets/confirmsheet.dart';
 
 class HomeTab extends StatefulWidget {
@@ -34,6 +36,33 @@ class _HomeTabState extends State<HomeTab> {
     LatLng pos = LatLng(position.latitude, position.longitude);
     mapController.animateCamera(CameraUpdate.newLatLng(pos));
 
+  }
+  void getCurrentDriverInfo () async {
+
+    currentFirebaseUser = await FirebaseAuth.instance.currentUser();
+   /* DatabaseReference driverRef = FirebaseDatabase.instance.reference().child('drivers/${currentFirebaseUser.uid}');
+    driverRef.once().then((DataSnapshot snapshot){
+
+      if(snapshot.value != null){
+        currentDriverInfo = Driver.fromSnapshot(snapshot);
+        print(currentDriverInfo.fullName);
+      }
+
+    });*/
+
+    PushNotificationService pushNotificationService = PushNotificationService();
+
+    pushNotificationService.initialize(context);
+    pushNotificationService.getToken();
+
+   // HelperMethods.getHistoryInfo(context);
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentDriverInfo();
   }
 
 
