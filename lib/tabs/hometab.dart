@@ -9,6 +9,7 @@ import 'package:workavane/brand_colors.dart';
 import 'package:workavane/globalvariables.dart';
 import 'package:workavane/widgets/AvailabilityButton.dart';
 import 'package:workavane/widgets/TaxiButton.dart';
+import 'package:workavane/widgets/confirmsheet.dart';
 
 class HomeTab extends StatefulWidget {
   @override
@@ -20,7 +21,10 @@ class _HomeTabState extends State<HomeTab> {
 
     var geoLocator = Geolocator();
       var locationOptions = LocationOptions(accuracy: LocationAccuracy.bestForNavigation, distanceFilter: 4);
+    String availabilityTitle = 'OFFER A RIDE';
+  Color availabilityColor = BrandColors.colorGreen;
 
+  bool isAvailable = false;
 
 
   void getCurrentPosition() async {
@@ -59,7 +63,7 @@ class _HomeTabState extends State<HomeTab> {
         
         ),
        
-       Positioned(
+      /* Positioned(
          top:60,
          left:0,
          right: 0,
@@ -70,18 +74,75 @@ class _HomeTabState extends State<HomeTab> {
            title: 'OFFER A RIDE',
            color: Colors.green,
            onPressed: (){
-             GoOnline();
-             getLocationUpdates();
+            // GoOnline();
+             //getLocationUpdates();
 
            },
          ),
                   ],
                 ),
-       ),
+       ),*/
+      Positioned(
+          top: 60,
+          left: 0,
+          right: 0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              AvailabilityButton(
+                title: availabilityTitle,
+                color: availabilityColor,
+                onPressed: (){
 
+
+                showModalBottomSheet(
+                  isDismissible: false,
+                    context: context,
+                    builder: (BuildContext context) => ConfirmSheet(
+                      title: (!isAvailable) ? 'OFFER A RIDE' : 'STOP ACCEPTING',
+                      subtitle: (!isAvailable) ? 'You are about to become available to receive trip requests.Confirm to continue.': 'you will stop receiving new trip requests',
+
+                      onPressed: (){
+
+                        if(!isAvailable){
+                          GoOnline();
+                          getLocationUpdates();
+                          Navigator.pop(context);
+
+                          setState(() {
+                            availabilityColor = Colors.red;
+                            availabilityTitle = 'STOP ACCEPTING';
+                            isAvailable = true;
+                          });
+
+                        }
+                        else{
+
+                          GoOffline();
+                          Navigator.pop(context);
+                          setState(() {
+                            availabilityColor = BrandColors.colorGreen;
+                            availabilityTitle = 'OFFER A RIDE';
+                            isAvailable = false;
+                          });
+                        }
+
+                      },
+                    ),
+                );
+
+                },
+              ),
+            ],
+          ),
+        )
 
       ],
     );
+  }
+
+      
+    
 
                
 
@@ -125,7 +186,7 @@ class _HomeTabState extends State<HomeTab> {
             
       
 
-  }
+  
   void GoOnline(){
     Geofire.initialize('driversAvailable');
     Geofire.setLocation(currentFirebaseUser.uid, currentPosition.latitude, currentPosition.longitude);
@@ -139,14 +200,23 @@ class _HomeTabState extends State<HomeTab> {
 
   }
 
+  void GoOffline (){
+
+    Geofire.removeLocation(currentFirebaseUser.uid);
+    tripRequestRef.onDisconnect();
+    tripRequestRef.remove();
+    tripRequestRef = null;
+
+  }
+
   void getLocationUpdates(){
 
     homeTabPositionStream = geoLocator.getPositionStream(locationOptions).listen((Position position) {
       currentPosition = position;
 
-      
+      if(isAvailable){
         Geofire.setLocation(currentFirebaseUser.uid, position.latitude, position.longitude);
-      
+      }
 
       LatLng pos = LatLng(position.latitude, position.longitude);
       mapController.animateCamera(CameraUpdate.newLatLng(pos));
@@ -155,4 +225,4 @@ class _HomeTabState extends State<HomeTab> {
 
   }
 
-}
+  }

@@ -49,7 +49,11 @@ class VehicleInfoPage extends StatelessWidget {
     return Scaffold(
       key: scaffoldKey,
       body: SafeArea(
-        child: Container(
+
+        //child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(30),
+
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(5)),
               boxShadow: <BoxShadow>[
@@ -62,7 +66,10 @@ class VehicleInfoPage extends StatelessWidget {
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Color(0xfffbb448), Color(0xffe46b10)])),
+
+                  colors: [Color(0xFFB0BEC5), Color(0xFFECEFF1)])),
+
+
           child: Column(
             children: <Widget>[
               SizedBox(
