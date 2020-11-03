@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:workavane/brand_colors.dart';
 import 'package:workavane/widgets/TaxiButton.dart';
+import 'package:workavane/widgets/TaxiOutlineButton.dart';
 
 class ConfirmSheet extends StatelessWidget {
 
@@ -74,7 +75,7 @@ class ConfirmSheet extends StatelessWidget {
                   child: Container(
                     child: TaxiButton(
                       onPressed: onPressed,
-                      color: (title == 'GO ONLINE') ? BrandColors.colorGreen : Colors.red,
+                      color: (title == 'OFFER A RIDE') ? BrandColors.colorGreen : Colors.red,
                       title: 'CONFIRM',
                     ),
                   ),

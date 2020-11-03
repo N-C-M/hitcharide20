@@ -79,7 +79,7 @@ class _MainPageDriverState extends State<MainPageDriver> with SingleTickerProvid
         ],
        currentIndex: selecetdIndex,
         unselectedItemColor: BrandColors.colorIcon,
-        selectedItemColor: BrandColors.colorOrange,
+        selectedItemColor: Colors.teal,
         showUnselectedLabels: true,
         selectedLabelStyle: TextStyle(fontSize: 12),
         type: BottomNavigationBarType.fixed,
