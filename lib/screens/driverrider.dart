@@ -2,17 +2,45 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:workavane/brand_colors.dart';
 import 'package:workavane/screens/mainpage.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:workavane/screens/vehicleinfo.dart';
 
 class DriverRider extends StatefulWidget {
-
   static const String id = 'choose';
   @override
   _DriverRiderState createState() => _DriverRiderState();
 }
 
 class _DriverRiderState extends State<DriverRider> {
+  Widget _submitButton() {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MainPage()));
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.symmetric(vertical: 13),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Color(0xffdf8e33).withAlpha(100),
+                  offset: Offset(2, 4),
+                  blurRadius: 8,
+                  spreadRadius: 2)
+            ],
+            color: Colors.white),
+        child: Text(
+          'Rider',
+          style: TextStyle(fontSize: 20, color: Color(0xfff7892b)),
+        ),
+      ),
+    );
+  }
+
 
   Widget _submitButton() {
     return InkWell(
@@ -41,6 +69,7 @@ class _DriverRiderState extends State<DriverRider> {
       ),
     );
   }
+
 
 
   Widget _signUpButton() {
@@ -91,19 +120,22 @@ class _DriverRiderState extends State<DriverRider> {
 
 
 
+
      
+
+
+
 
   @override
   Widget build(BuildContext context) {
-
-return Scaffold(
-
+    return Scaffold(
       body: SingleChildScrollView(
 
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20),
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
+
             borderRadius: BorderRadius.all(Radius.circular(5)),
             boxShadow: <BoxShadow>[
               BoxShadow(
@@ -116,6 +148,7 @@ return Scaffold(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [Color(0xFFB0BEC5), Color(0xFFECEFF1)])),
+
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -137,7 +170,6 @@ return Scaffold(
         ),
       ),
     );
-    
 
     
   }
