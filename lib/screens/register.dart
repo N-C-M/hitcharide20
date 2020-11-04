@@ -89,6 +89,7 @@ class _RegisterState extends State<Register> {
         key: scaffoldKey,
         backgroundColor: Colors.white,
         body: Container(
+          padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(5)),
               boxShadow: <BoxShadow>[
@@ -101,13 +102,13 @@ class _RegisterState extends State<Register> {
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Color(0xfffbb448), Color(0xffe46b10)])),
+                  colors: [Color(0xFFB0BEC5), Color(0xFFECEFF1)])),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: <Widget>[
                 SizedBox(
-                  height: 70,
+                  height: 40,
                 ),
                 Image(
                   alignment: Alignment.center,
@@ -116,7 +117,7 @@ class _RegisterState extends State<Register> {
                   image: AssetImage('images/login_icon.png'),
                 ),
                 SizedBox(
-                  height: 40,
+                  height: 10,
                 ),
                 Text(
                   'Create an Account', //

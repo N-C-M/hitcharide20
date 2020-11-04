@@ -129,7 +129,7 @@ class _HomeTabState extends State<HomeTab> {
                     context: context,
                     builder: (BuildContext context) => ConfirmSheet(
                       title: (!isAvailable) ? 'OFFER A RIDE' : 'STOP ACCEPTING',
-                      subtitle: (!isAvailable) ? 'You are about to become available to receive trip requests.Confirm to continue.': 'you will stop receiving new trip requests',
+                      subtitle: (!isAvailable) ? 'You are about to become available to receive trip requests.Confirm to continue!': 'You will stop receiving new trip requests',
 
                       onPressed: (){
 

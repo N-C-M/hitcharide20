@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
             gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Color(0xfffbb448), Color(0xffe46b10)])),
+                colors: [Color(0xFFB0BEC5), Color(0xFFECEFF1)])),
         child: Padding(
           padding: EdgeInsets.all(8.0),
           child: Column(
