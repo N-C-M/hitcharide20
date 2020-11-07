@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:connectivity/connectivity.dart';
@@ -12,6 +13,8 @@ import 'package:workavane/dataprovider/appdata.dart';
 import 'package:workavane/helper/RequestHelper.dart';
 import 'package:workavane/globalvariables.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+
 
 
 
@@ -147,6 +150,44 @@ import 'package:provider/provider.dart';
     int randInt = randomGenerator.nextInt(max);
 
     return randInt.toDouble();
+  }
+
+  static sendNotification(String token, context, String ride_id) async {
+
+    var destination = Provider.of<AppData>(context, listen: false).destinationAddress;
+
+    Map<String, String> headerMap = {
+      'Content-Type': 'application/json',
+      'Authorization': serverKey,
+    };
+
+    Map notificationMap = {
+      'title': 'NEW TRIP REQUEST',
+      'body': 'Destination, ${destination.placeName}'
+    };
+
+    Map dataMap = {
+      'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+      'id': '1',
+      'status': 'done',
+      'ride_id' : ride_id,
+    };
+
+    Map bodyMap = {
+      'notification': notificationMap,
+      'data': dataMap,
+      'priority': 'high',
+      'to': token
+    };
+
+    var response = await http.post(
+      'https://fcm.googleapis.com/fcm/send',
+      headers: headerMap,
+      body: jsonEncode(bodyMap)
+    );
+
+    print(response.body);
+
   }
 
 

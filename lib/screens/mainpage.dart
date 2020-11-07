@@ -24,6 +24,7 @@ import 'package:workavane/helper/helperMethods.dart';
 import 'package:workavane/screens/searchride.dart';
 import 'package:workavane/styles/styles.dart';
 import 'package:workavane/widgets/BrandDivider.dart';
+import 'package:workavane/widgets/NoDriverDialog.dart';
 import 'package:workavane/widgets/TaxiButton.dart';
 
 class MainPage extends StatefulWidget {
@@ -63,22 +64,11 @@ class _MainPageState extends State<MainPage > with TickerProviderStateMixin{
 
   DatabaseReference rideRef;
 
+  List<NearbyDriver> availableDrivers;
+
+
   bool nearbyDriversKeysLoaded=false;
 
-
-   /* void setupPositionLocator() async {
-
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    currentPosition = position;
-    LatLng pos = LatLng(position.latitude, position.longitude);
-    CameraPosition cp = new CameraPosition(target: pos, zoom: 14);
-        map.animateCamera(CameraUpdate.newCameraPosition(cp));
-
-    
-
-
-  }*/
-   
 
   void setupPositionLocator() async {
     Position position = await geoLocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.bestForNavigation);
@@ -525,6 +515,10 @@ class _MainPageState extends State<MainPage > with TickerProviderStateMixin{
                           onPressed: (){
                             showRequestingSheet();
 
+                            availableDrivers = FireHelper.nearbyDriverList;
+
+                            findDriver();
+
                           },
                         ),
                       ),
@@ -861,41 +855,33 @@ void createRideRequest(){
     rideRef.set(rideMap);
 
     /*rideSubscription = rideRef.onValue.listen((event) async {
-
       //check for null snapshot
       if(event.snapshot.value == null){
         return;
       }
-
       //get car details
       if(event.snapshot.value['car_details'] != null){
         setState(() {
           driverCarDetails = event.snapshot.value['car_details'].toString();
         });
       }
-
       // get driver name
       if(event.snapshot.value['driver_name'] != null){
         setState(() {
           driverFullName = event.snapshot.value['driver_name'].toString();
         });
       }
-
       // get driver phone number
       if(event.snapshot.value['driver_phone'] != null){
         setState(() {
           driverPhoneNumber = event.snapshot.value['driver_phone'].toString();
         });
       }
-
-
       //get and use driver location updates
       if(event.snapshot.value['driver_location'] != null){
-
         double driverLat = double.parse(event.snapshot.value['driver_location']['latitude'].toString());
         double driverLng = double.parse(event.snapshot.value['driver_location']['longitude'].toString());
         LatLng driverLocation = LatLng(driverLat, driverLng);
-
         if(status == 'accepted'){
           updateToPickup(driverLocation);
         }
@@ -907,32 +893,23 @@ void createRideRequest(){
             tripStatusDisplay = 'Driver has arrived';
           });
         }
-
       }
-
-
       if(event.snapshot.value['status'] != null){
         status = event.snapshot.value['status'].toString();
       }
-
       if(status == 'accepted'){
         showTripSheet();
         Geofire.stopListener();
         removeGeofireMarkers();
       }
-
       if(status == 'ended'){
-
         if(event.snapshot.value['fares'] != null) {
-
           int fares = int.parse(event.snapshot.value['fares'].toString());
-
           var response = await showDialog(
               context: context,
             barrierDismissible: false,
             builder: (BuildContext context) => CollectPayment(paymentMethod: 'cash', fares: fares,),
           );
-
           if(response == 'close'){
             rideRef.onDisconnect();
             rideRef = null;
@@ -940,10 +917,8 @@ void createRideRequest(){
             rideSubscription = null;
             resetApp();
           }
-
         }
       }
-
     });*/
 
   }
@@ -957,7 +932,7 @@ void createRideRequest(){
 
 
 
-resetApp(){
+ resetApp(){
 
     setState(() {
 
@@ -984,4 +959,30 @@ resetApp(){
 
   }
 
+    void noDriverFound(){
+    showDialog(
+        context: context,
+      barrierDismissible: false,
+        builder: (BuildContext context) => NoDriverDialog()
+    );
+  }
+
+ void findDriver (){
+
+    if(availableDrivers.length == 0){
+      cancelRequest();
+      resetApp();
+      noDriverFound();
+      return;
+    }
+
+    var driver = availableDrivers[0];
+
+    //notifyDriver(driver);
+
+    availableDrivers.removeAt(0);
+
+    print(driver.key);
+
+  }
 }

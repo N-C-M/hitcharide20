@@ -8,6 +8,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:workavane/datamodels/user.dart';
 
+String serverKey="key=AAAAI172Nds:APA91bHyxvd3Xa_V6mnr_pqpTtFkPcFNLgp-oLW_0MhCD4TjLjzyEaJFSAn-Hg_cH8qcmDrpOwgg3NhDEWKH5VBFLQAh8MZ_8OWUrdlSpGZyk5tZMl-kE0ZHAha4gd6a0QtDjc0_ga_p";
+
 String mapkey="AIzaSyCGDOgE33dc-6UHtIAptXSAVZRogFvV8Hs";
 
   final CameraPosition googlePlex = CameraPosition(
