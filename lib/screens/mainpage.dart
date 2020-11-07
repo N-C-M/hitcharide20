@@ -978,11 +978,36 @@ void createRideRequest(){
 
     var driver = availableDrivers[0];
 
-    //notifyDriver(driver);
+    notifyDriver(driver);
 
     availableDrivers.removeAt(0);
 
     print(driver.key);
 
+  }
+
+
+  void notifyDriver(NearbyDriver driver){
+
+    DatabaseReference driverTripRef = FirebaseDatabase.instance.reference().child('drivers/${driver.key}/newtrip');//to change waiting to request id
+    driverTripRef.set(rideRef.key);
+
+    // Get and notify driver using token
+    DatabaseReference tokenRef = FirebaseDatabase.instance.reference().child('drivers/${driver.key}/token');//to get token to msg
+
+    tokenRef.once().then((DataSnapshot snapshot){
+
+      if(snapshot.value != null){
+
+        String token = snapshot.value.toString();
+
+        // send notification to selected driver
+        HelperMethods.sendNotification(token, context, rideRef.key);
+      }
+      else{
+
+        return;
+      }
+    });
   }
 }
