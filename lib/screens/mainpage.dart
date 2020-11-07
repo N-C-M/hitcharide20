@@ -21,6 +21,7 @@ import 'package:workavane/globalvariables.dart';
 import 'package:workavane/helper/firehelper.dart';
 
 import 'package:workavane/helper/helperMethods.dart';
+import 'package:workavane/ridevar.dart';
 import 'package:workavane/screens/searchride.dart';
 import 'package:workavane/styles/styles.dart';
 import 'package:workavane/widgets/BrandDivider.dart';
@@ -68,6 +69,8 @@ class _MainPageState extends State<MainPage > with TickerProviderStateMixin{
 
 
   bool nearbyDriversKeysLoaded=false;
+
+  String appState='NORMAL';
 
 
   void setupPositionLocator() async {
@@ -513,6 +516,11 @@ class _MainPageState extends State<MainPage > with TickerProviderStateMixin{
                           color:Colors.blueGrey,
                           
                           onPressed: (){
+
+                            setState(() {
+                              appState = 'REQUESTING';
+                            });
+
                             showRequestingSheet();
 
                             availableDrivers = FireHelper.nearbyDriverList;
@@ -925,9 +933,9 @@ void createRideRequest(){
    void cancelRequest(){
     rideRef.remove();
 
-    //setState(() {
-      //appState = 'NORMAL';
-    //});
+    setState(() {
+      appState = 'NORMAL';
+    });
   }
 
 
@@ -1008,6 +1016,46 @@ void createRideRequest(){
 
         return;
       }
+      const oneSecTick = Duration(seconds: 1);
+
+      var timer = Timer.periodic(oneSecTick, (timer) {
+
+        if(appState != 'REQUESTING'){ //stop timer when we cancel request
+          driverTripRef.set('cancelled');
+          driverTripRef.onDisconnect();
+          timer.cancel();
+          driverRequestTimeout = 30;
+        }
+        
+                driverRequestTimeout --;
+
+
+        driverTripRef.onValue.listen((event) {
+
+          // confirms that driver has clicked accepted for the new trip request
+          if(event.snapshot.value.toString() == 'accepted'){
+            driverTripRef.onDisconnect();
+            timer.cancel();
+            driverRequestTimeout = 30;
+          }
+        });
+
+
+         if(driverRequestTimeout == 0){
+
+          //informs driver that ride has timed out
+          driverTripRef.set('timeout');
+          driverTripRef.onDisconnect();
+          driverRequestTimeout = 30;
+          timer.cancel();
+
+          //select the next closest driver
+          findDriver();
+        }
+
+        
+      });
+
     });
   }
 }
