@@ -47,7 +47,7 @@ class CollectPayment extends StatelessWidget {
 
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text('Amount above is the total fares to be charged to the rider', textAlign: TextAlign.center,),
+              child: Text('Amount above is the total fares to be given to the driver', textAlign: TextAlign.center,),
             ),
 
             SizedBox(height: 30,),

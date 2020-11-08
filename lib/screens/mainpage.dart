@@ -27,6 +27,7 @@ import 'package:workavane/styles/styles.dart';
 import 'package:workavane/widgets/BrandDivider.dart';
 import 'package:workavane/widgets/NoDriverDialog.dart';
 import 'package:workavane/widgets/TaxiButton.dart';
+import 'package:workavane/widgets/collectpayment.dart';
 
 class MainPage extends StatefulWidget {
 
@@ -65,12 +66,19 @@ class _MainPageState extends State<MainPage > with TickerProviderStateMixin{
 
   DatabaseReference rideRef;
 
+    StreamSubscription<Event> rideSubscription;
+
+
   List<NearbyDriver> availableDrivers;
 
 
   bool nearbyDriversKeysLoaded=false;
+    bool isRequestingLocationDetails = false;
+
 
   String appState='NORMAL';
+
+  double tripSheetHeight = 0;
 
 
   void setupPositionLocator() async {
@@ -120,6 +128,15 @@ class _MainPageState extends State<MainPage > with TickerProviderStateMixin{
     });
 
     createRideRequest();
+  }
+
+showTripSheet(){
+
+    setState(() {
+      requestSheetHeight = 0;
+      tripSheetHeight = (Platform.isAndroid) ? 275 : 300;
+      mapBottomPadding = (Platform.isAndroid) ? 280 : 270;
+    });
   }
 
   void createMarker(){
@@ -625,6 +642,145 @@ class _MainPageState extends State<MainPage > with TickerProviderStateMixin{
             ),
           ),
     
+
+    //trip
+     Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: AnimatedSize(
+              vsync: this,
+              duration: new Duration(milliseconds: 150),
+              curve: Curves.easeIn,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 15.0, // soften the shadow
+                      spreadRadius: 0.5, //extend the shadow
+                      offset: Offset(
+                        0.7, // Move to right 10  horizontally
+                        0.7, // Move to bottom 10 Vertically
+                      ),
+                    )
+                  ],
+                ),
+                height: tripSheetHeight,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 18),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+
+                      SizedBox(height: 5,),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(tripStatusDisplay,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 18, fontFamily: 'Brand-Bold'),
+                          ),
+                        ],
+                      ),
+
+                      SizedBox(height: 20,),
+
+                      BrandDivider(),
+
+                      SizedBox(height: 20,),
+
+                      Text(driverCarDetails, style: TextStyle(color: BrandColors.colorTextLight),),
+
+                      Text(driverFullName, style: TextStyle(fontSize: 20),),
+
+                      SizedBox(height: 20,),
+
+                      BrandDivider(),
+
+                      SizedBox(height: 20,),
+
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+
+                              Container(
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular((25))),
+                                  border: Border.all(width: 1.0, color: BrandColors.colorTextLight),
+                                ),
+                                child: Icon(Icons.call),
+                              ),
+
+                              SizedBox(height: 10,),
+
+                              Text('Call'),
+                            ],
+                          ),
+
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+
+                              Container(
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular((25))),
+                                  border: Border.all(width: 1.0, color: BrandColors.colorTextLight),
+                                ),
+                                child: Icon(Icons.list),
+                              ),
+
+                              SizedBox(height: 10,),
+
+                              Text('Details'),
+                            ],
+                          ),
+
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+
+                              Container(
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular((25))),
+                                  border: Border.all(width: 1.0, color: BrandColors.colorTextLight),
+                                ),
+                                child: Icon(OMIcons.clear),
+                              ),
+
+                              SizedBox(height: 10,),
+
+                              Text('Cancel'),
+                            ],
+                          ),
+
+                        ],
+                      )
+
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          )
+
+    //trip end
+    
+    
     ],
   ),
     );
@@ -862,34 +1018,48 @@ void createRideRequest(){
 
     rideRef.set(rideMap);
 
-    /*rideSubscription = rideRef.onValue.listen((event) async {
+    rideSubscription = rideRef.onValue.listen((event) async {
+
       //check for null snapshot
       if(event.snapshot.value == null){
         return;
       }
+
+      if(event.snapshot.value['status']!=null){
+        status=event.snapshot.value['status'].toString();
+      }
+
+      if(status=='accepted'){
+        showTripSheet();
+      }
+
       //get car details
       if(event.snapshot.value['car_details'] != null){
         setState(() {
           driverCarDetails = event.snapshot.value['car_details'].toString();
         });
       }
+
       // get driver name
       if(event.snapshot.value['driver_name'] != null){
         setState(() {
           driverFullName = event.snapshot.value['driver_name'].toString();
         });
       }
+
       // get driver phone number
       if(event.snapshot.value['driver_phone'] != null){
         setState(() {
           driverPhoneNumber = event.snapshot.value['driver_phone'].toString();
         });
       }
-      //get and use driver location updates
+
       if(event.snapshot.value['driver_location'] != null){
+
         double driverLat = double.parse(event.snapshot.value['driver_location']['latitude'].toString());
         double driverLng = double.parse(event.snapshot.value['driver_location']['longitude'].toString());
         LatLng driverLocation = LatLng(driverLat, driverLng);
+
         if(status == 'accepted'){
           updateToPickup(driverLocation);
         }
@@ -901,23 +1071,31 @@ void createRideRequest(){
             tripStatusDisplay = 'Driver has arrived';
           });
         }
+
       }
+
       if(event.snapshot.value['status'] != null){
         status = event.snapshot.value['status'].toString();
       }
+
       if(status == 'accepted'){
         showTripSheet();
         Geofire.stopListener();
         removeGeofireMarkers();
       }
+
       if(status == 'ended'){
+
         if(event.snapshot.value['fares'] != null) {
+
           int fares = int.parse(event.snapshot.value['fares'].toString());
+
           var response = await showDialog(
               context: context,
             barrierDismissible: false,
             builder: (BuildContext context) => CollectPayment(paymentMethod: 'cash', fares: fares,),
           );
+
           if(response == 'close'){
             rideRef.onDisconnect();
             rideRef = null;
@@ -925,11 +1103,76 @@ void createRideRequest(){
             rideSubscription = null;
             resetApp();
           }
+
         }
       }
-    });*/
+
+
+
+  });
+} 
+
+
+void removeGeofireMarkers(){
+    setState(() {
+      _Markers.removeWhere((m) => m.markerId.value.contains('driver'));
+    });
+  }
+
+void updateToPickup(LatLng driverLocation) async {
+
+    if(!isRequestingLocationDetails){
+
+      isRequestingLocationDetails = true;
+
+      var positionLatLng = LatLng(currentPosition.latitude, currentPosition.longitude);
+
+      var thisDetails = await HelperMethods.getDirectionDetails(driverLocation, positionLatLng);
+
+      if(thisDetails == null){
+        return;
+      }
+
+      setState(() {
+        tripStatusDisplay = 'Driver is Arriving - ${thisDetails.durationText}';
+      });
+
+      isRequestingLocationDetails = false;
+
+    }
+
 
   }
+
+
+
+void updateToDestination(LatLng driverLocation) async {
+
+    if(!isRequestingLocationDetails){
+
+      isRequestingLocationDetails = true;
+
+      var destination = Provider.of<AppData>(context, listen: false).destinationAddress;
+
+      var destinationLatLng = LatLng(destination.latitude, destination.longitude);
+
+      var thisDetails = await HelperMethods.getDirectionDetails(driverLocation, destinationLatLng);
+
+      if(thisDetails == null){
+        return;
+      }
+
+      setState(() {
+        tripStatusDisplay = 'Driving to Destination - ${thisDetails.durationText}';
+      });
+
+      isRequestingLocationDetails = false;
+
+    }
+
+
+  }
+
    void cancelRequest(){
     rideRef.remove();
 
@@ -950,16 +1193,16 @@ void createRideRequest(){
       _Circles.clear();
       rideDetailsSheetHeight = 0;
       requestSheetHeight = 0;
-      //tripSheetHeight = 0;
+      tripSheetHeight = 0;
       searchSheetHeight = (Platform.isAndroid) ? 275 : 300;
       mapBottomPadding = (Platform.isAndroid) ? 280 : 270;
       drawerCanOpen = true;
 
-     /* status = '';
+      status = '';
       driverFullName = '';
       driverPhoneNumber = '';
       driverCarDetails = '';
-      tripStatusDisplay = 'Driver is Arriving';*/
+      tripStatusDisplay = 'Driver is Arriving';
 
     });
 
