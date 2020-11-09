@@ -86,164 +86,164 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: scaffoldKey,
-        backgroundColor: Colors.white,
-        body: Container(
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                    color: Colors.grey.shade200,
-                    offset: Offset(2, 4),
-                    blurRadius: 5,
-                    spreadRadius: 2)
-              ],
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Color(0xFFB0BEC5), Color(0xFFECEFF1)])),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 40,
-                ),
-                Image(
-                  alignment: Alignment.center,
-                  height: 100.0,
-                  width: 100.0,
-                  image: AssetImage('images/login_icon.png'),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  'Create an Account', //
+    key: scaffoldKey,
+    backgroundColor: Colors.white,
+    body: Container(
+      padding: EdgeInsets.all(4),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(4)),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+                color: Colors.grey.shade200,
+                offset: Offset(2, 4),
+                blurRadius: 5,
+                spreadRadius: 2)
+          ],
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFFB0BEC5), Color(0xFFECEFF1)])),
+      child: Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 40,
+              ),
+              /*Image(
+                alignment: Alignment.center,
+                height: 55.0,
+                width: 55.0,
+                image: AssetImage('images/login_icon.png'),
+              ),*/
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                'Create an Account', //
 
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 25, fontFamily: 'Brand-Bold'),
-                ),
-                Padding(
-                    padding: EdgeInsets.all(20.0),
-                    child: Column(
-                      children: <Widget>[
-                        TextField(
-                          // Full Name
-                          controller: fullname,
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
-                              labelText: 'Full Name',
-                              labelStyle: TextStyle(
-                                fontSize: 14.0,
-                              ),
-                              hintStyle: TextStyle(
-                                  color: Colors.grey, fontSize: 10.0)),
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        TextField(
-                          // The Email Field
-                          controller: email,
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
-                              labelText: 'Email address',
-                              labelStyle: TextStyle(
-                                fontSize: 14.0,
-                              ),
-                              hintStyle: TextStyle(
-                                  color: Colors.grey, fontSize: 10.0)),
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        TextField(
-                          // Phone Number
-                          controller: phno,
-                          keyboardType: TextInputType.phone,
-                          decoration: InputDecoration(
-                              labelText: 'Phone Number',
-                              labelStyle: TextStyle(
-                                fontSize: 14.0,
-                              ),
-                              hintStyle: TextStyle(
-                                  color: Colors.grey, fontSize: 10.0)),
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        TextField(
-                          //The Password Field
-                          controller: password,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                              labelText: 'Password',
-                              labelStyle: TextStyle(
-                                fontSize: 14.0,
-                              ),
-                              hintStyle: TextStyle(
-                                  color: Colors.grey, fontSize: 10.0)),
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        SizedBox(
-                          height: 40,
-                        ),
-                        TaxiButton(
-                          title: 'REGISTER',
-                          color: Colors.blueGrey,
-                          onPressed: () async {
-                            // korch data validation edkatte
-
-                            if (fullname.text.length < 3) {
-                              showSnackBar('Provide a valid FullName');
-                              return;
-                            }
-                            if (phno.text.length < 10) {
-                              showSnackBar('Enter a valid Mobile Number');
-                            }
-
-                            if (!email.text.contains('@')) {
-                              showSnackBar(
-                                  'Please provide a valid email address');
-                              return;
-                            }
-
-                            if (password.text.length < 8) {
-                              showSnackBar(
-                                  'password must be at least 8 characters');
-                              return;
-                            }
-                            // net undo?
-
-                            var connectivityResult =
-                                await Connectivity().checkConnectivity();
-                            if (connectivityResult !=
-                                    ConnectivityResult.mobile &&
-                                connectivityResult != ConnectivityResult.wifi) {
-                              showSnackBar('No internet connectivity');
-                              return;
-                            }
-
-                            //
-                            registerUser();
-                          },
-                        )
-                      ],
-                    )),
-                FlatButton(
-                    onPressed: () {
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, LoginPage.id, (route) => false);
-                    },
-                    child: Text('Already have an account? Log In here')),
-              ],
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 25, fontFamily: 'Brand-Bold'),
+              ),
+              Padding(
+                  padding: EdgeInsets.all(19.5),
+                  child: Column(
+                    children: <Widget>[
+                      TextField(
+        // Full Name
+        controller: fullname,
+        keyboardType: TextInputType.emailAddress,
+        decoration: InputDecoration(
+            labelText: 'Full Name',
+            labelStyle: TextStyle(
+              fontSize: 14.0,
             ),
+            hintStyle: TextStyle(
+                color: Colors.grey, fontSize: 10.0)),
+        style: TextStyle(fontSize: 14),
+                      ),
+                      SizedBox(
+        height: 10,
+                      ),
+                      TextField(
+        // The Email Field
+        controller: email,
+        keyboardType: TextInputType.emailAddress,
+        decoration: InputDecoration(
+            labelText: 'Email address',
+            labelStyle: TextStyle(
+              fontSize: 14.0,
+            ),
+            hintStyle: TextStyle(
+                color: Colors.grey, fontSize: 10.0)),
+        style: TextStyle(fontSize: 14),
+                      ),
+                      SizedBox(
+        height: 12,
+                      ),
+                      TextField(
+        // Phone Number
+        controller: phno,
+        keyboardType: TextInputType.phone,
+        decoration: InputDecoration(
+            labelText: 'Phone Number',
+            labelStyle: TextStyle(
+              fontSize: 14.0,
+            ),
+            hintStyle: TextStyle(
+                color: Colors.grey, fontSize: 10.0)),
+        style: TextStyle(fontSize: 14),
+                      ),
+                      SizedBox(
+        height: 12,
+                      ),
+                      TextField(
+        //The Password Field
+        controller: password,
+        obscureText: true,
+        decoration: InputDecoration(
+            labelText: 'Password',
+            labelStyle: TextStyle(
+              fontSize: 14.0,
+            ),
+            hintStyle: TextStyle(
+                color: Colors.grey, fontSize: 10.0)),
+        style: TextStyle(fontSize: 14),
+                      ),
+                      SizedBox(
+        height: 25,
+                      ),
+                      TaxiButton(
+        title: 'REGISTER',
+        color: Colors.blueGrey,
+        onPressed: () async {
+          // korch data validation edkatte
+
+          if (fullname.text.length < 3) {
+            showSnackBar('Provide a valid FullName');
+            return;
+          }
+          if (phno.text.length < 10) {
+            showSnackBar('Enter a valid Mobile Number');
+          }
+
+          if (!email.text.contains('@')) {
+            showSnackBar(
+                'Please provide a valid email address');
+            return;
+          }
+
+          if (password.text.length < 8) {
+            showSnackBar(
+                'password must be at least 8 characters');
+            return;
+          }
+          // net undo?
+
+          var connectivityResult =
+              await Connectivity().checkConnectivity();
+          if (connectivityResult !=
+                  ConnectivityResult.mobile &&
+              connectivityResult != ConnectivityResult.wifi) {
+            showSnackBar('No internet connectivity');
+            return;
+          }
+
+          //
+          registerUser();
+        },
+                      )
+                    ],
+                  )),
+              FlatButton(
+                  onPressed: () {
+                    Navigator.pushNamedAndRemoveUntil(
+        context, LoginPage.id, (route) => false);
+                  },
+                  child: Text('Already have an account? Log In here')),
+            ],
           ),
-        ));
+      ),
+    ));
   }
 }

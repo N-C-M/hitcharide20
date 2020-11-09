@@ -32,7 +32,7 @@ class NoDriverDialog extends StatelessWidget {
 
                 Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text('No available driver close by, we suggest you try again shortly', textAlign: TextAlign.center,),
+                  child: Text('No available ride close by, we suggest you try again shortly', textAlign: TextAlign.center,),
                 ),
 
                 SizedBox(height: 30,),

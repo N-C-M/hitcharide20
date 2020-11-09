@@ -104,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                 image: AssetImage('images/login_icon.png'),
               ),
               SizedBox(
-                height: 40,
+                height: 15,
               ),
               Text(
                 'Sign In',
@@ -143,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(fontSize: 14),
                     ),
                     SizedBox(
-                      height: 40,
+                      height: 38,
                     ),
                     TaxiButton(
                       title: 'LOGIN',

@@ -64,6 +64,8 @@ class _MainPageState extends State<MainPage > with TickerProviderStateMixin{
 
     bool drawerCanOpen = true;
 
+  String dest;
+
   DatabaseReference rideRef;
 
     StreamSubscription<Event> rideSubscription;
@@ -79,6 +81,8 @@ class _MainPageState extends State<MainPage > with TickerProviderStateMixin{
   String appState='NORMAL';
 
   double tripSheetHeight = 0;
+
+  
 
 
   void setupPositionLocator() async {
@@ -506,7 +510,7 @@ showTripSheet(){
 
                                             ),
                                           ),
-                              Text((tripDirectionDetails != null) ? '\$${HelperMethods.estimateFares(tripDirectionDetails)}' : '', style: TextStyle(fontSize: 18, fontFamily: 'Brand-Bold'),),
+                              Text((tripDirectionDetails != null) ? 'Rs:${HelperMethods.estimateFares(tripDirectionDetails)}' : '', style: TextStyle(fontSize: 18, fontFamily: 'Brand-Bold'),),
 
                       ],),
                     ),
@@ -752,14 +756,19 @@ showTripSheet(){
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
 
-                              Container(
-                                height: 50,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular((25))),
-                                  border: Border.all(width: 1.0, color: BrandColors.colorTextLight),
+                              FlatButton(
+                                      onPressed: (){
+                                        cancelRequest();
+                                      },
+                                                              child: Container(
+                                  height: 50,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular((25))),
+                                    border: Border.all(width: 1.0, color: BrandColors.colorTextLight),
+                                  ),
+                                  child: Icon(OMIcons.clear),
                                 ),
-                                child: Icon(OMIcons.clear),
                               ),
 
                               SizedBox(height: 10,),
@@ -986,13 +995,13 @@ void updateDriversOnMap(){
 
 
 
-
 void createRideRequest(){
 
     rideRef = FirebaseDatabase.instance.reference().child('rideRequest').push();//creating the table ride request
 
     var pickup = Provider.of<AppData>(context, listen: false).pickupAddress;
     var destination = Provider.of<AppData>(context, listen: false).destinationAddress;
+    dest=destination.placeName.toString();
 
     Map pickupMap = {
       'latitude': pickup.latitude.toString(),
@@ -1012,10 +1021,13 @@ void createRideRequest(){
       'destination_address': destination.placeName,
       'location': pickupMap,
       'destination': destinationMap,
-      'payment_method': 'card',
+      'payment_method': 'cash',
       'driver_id': 'waiting',
     };
+   // 
 
+  
+    
     rideRef.set(rideMap);
 
     rideSubscription = rideRef.onValue.listen((event) async {
@@ -1219,6 +1231,10 @@ void updateToDestination(LatLng driverLocation) async {
   }
 
  void findDriver (){
+    
+
+
+  
 
     if(availableDrivers.length == 0){
       cancelRequest();
@@ -1226,14 +1242,70 @@ void updateToDestination(LatLng driverLocation) async {
       noDriverFound();
       return;
     }
+    
+   
+
 
     var driver = availableDrivers[0];
+    DatabaseReference destref = FirebaseDatabase.instance.reference().child('drivers/${driver.key}/destination');
+    
 
-    notifyDriver(driver);
+    DatabaseReference reqRef= FirebaseDatabase.instance.reference().child('rideRequest');
+   
 
-    availableDrivers.removeAt(0);
+     
+    destref.once().then((DataSnapshot snapshot){ //refer this
 
-    print(driver.key);
+      if(snapshot.value != null){
+
+        
+         driverIndest = snapshot.value.toString();
+         if(driverIndest==dest){
+
+           notifyDriver(driver);
+
+           availableDrivers.removeAt(0);
+
+           print(driver.key);
+
+         }
+        
+
+
+        // send notification to selected driver
+            //print(destination);
+            
+
+      }
+      else{
+
+        return;
+      }
+    });
+    
+    print(dest);
+    
+   /*reqRef.limitToLast(1).once().then((DataSnapshot snapshot){
+
+      if(snapshot.value != null){
+
+        String req = snapshot.value['destination_address'].toString();
+        print("hi");
+        print(req);
+
+
+        // send notification to selected driver
+        
+      }
+      else{
+
+        return;
+      }
+
+    });*/
+
+
+    
 
   }
 
@@ -1246,7 +1318,7 @@ void updateToDestination(LatLng driverLocation) async {
     // Get and notify driver using token
     DatabaseReference tokenRef = FirebaseDatabase.instance.reference().child('drivers/${driver.key}/token');//to get token to msg
 
-    tokenRef.once().then((DataSnapshot snapshot){
+    tokenRef.once().then((DataSnapshot snapshot){ //refer this
 
       if(snapshot.value != null){
 
@@ -1301,4 +1373,5 @@ void updateToDestination(LatLng driverLocation) async {
 
     });
   }
+ 
 }
