@@ -496,7 +496,7 @@ showTripSheet(){
                         Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: <Widget>[
-                                          Text('Taxi', style: TextStyle(fontSize: 18, fontFamily: 'Brand-Bold'),),
+                                          Text('Car', style: TextStyle(fontSize: 18, fontFamily: 'Brand-Bold'),),
                                           Text((tripDirectionDetails != null) ? tripDirectionDetails.distanceText : '', style: TextStyle(fontSize: 16, color: Colors.white),)
 
 

@@ -139,7 +139,7 @@ import 'package:http/http.dart' as http;
     double distanceFare = (details.distanceValue/1000) * 6;
     double timeFare = (details.durationValue / 60) * 1.5;
 
-    double totalFare = baseFare + distanceFare + timeFare;
+    double totalFare = (baseFare + distanceFare + timeFare)/2;
 
     return totalFare.truncate();
   }
