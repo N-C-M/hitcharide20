@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:workavane/screens/driverrider.dart';
 import 'package:workavane/widgets/TaxiButton.dart';
+import 'package:workavane/screens/mainpage.dart';
 
 import 'loginpage.dart';
 
@@ -79,7 +80,7 @@ class _RegisterState extends State<Register> {
 
       //Take the user to the mainPage
       Navigator.pushNamedAndRemoveUntil(
-          context, DriverRider.id, (route) => false);
+          context, MainPage.id, (route) => false);
     }
   }
 

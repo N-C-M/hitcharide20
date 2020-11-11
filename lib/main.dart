@@ -67,8 +67,8 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Brand-Regular',
           primarySwatch: Colors.blue,
         ),
-        initialRoute: (currentFirebaseUser == null) ? LoginPage.id : DriverRider.id,
-        //initialRoute: Register.id, // MainPAge arnn
+        initialRoute: (currentFirebaseUser == null) ? LoginPage.id : MainPage.id,
+       //initialRoute: Register.id, // MainPAge arnn
         routes: {
           MainPageDriver.id: (context) => MainPageDriver(),
           DriverRider.id: (context) => DriverRider(),

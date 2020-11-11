@@ -8,11 +8,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
+//import 'package:flutter_launch/flutter_launch.dart';
 
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:workavane/brand_colors.dart';
 import 'package:workavane/datamodels/directiondetails.dart';
 import 'package:workavane/datamodels/nearbydriver.dart';
@@ -162,6 +164,30 @@ showTripSheet(){
     super.initState();
     HelperMethods.getCurrentUserInfo();
   }
+
+ void launchWhatsApp({
+  @required String phone,
+  @required String message,
+}) async {
+  String url() {
+    if (Platform.isIOS) {
+      return "whatsapp://wa.me/$phone/?text=${Uri.parse(message)}";
+    } else {
+      return "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
+    }
+  }
+
+  if (await canLaunch(url())) {
+    await launch(url());
+  } else {
+    throw 'Could not launch ${url()}';
+  }
+}
+
+
+  /*void whatsAppOpen() async {
+    await FlutterLaunch.launchWathsApp(phone: "9446209053", message: "Hello");
+  }*/
 
 
    
@@ -404,14 +430,15 @@ showTripSheet(){
                               ),
                             SizedBox(height:22,),
                             Row(children: [
-                              Icon(OMIcons.home,color: Colors.grey,),
+                              Icon(OMIcons.myLocation,color: Colors.grey,),
                               SizedBox(
                                 width:12,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text('Add Home'),
+                                  
+                                  Text('Current Location',style: TextStyle(fontSize: 16),),
                                 SizedBox(height: 3,),
                                 Text('Your residential address',
                                   style: TextStyle(fontSize: 11, color: Colors.grey,),
@@ -421,11 +448,11 @@ showTripSheet(){
                             ],),
                             SizedBox(height:7,),
 
-                            BrandDivider(),
-                                                      SizedBox(height:5,),
+                           // BrandDivider(),
+                                                      //SizedBox(height:5,),
 
 
-                            Row(children: [
+                           /* Row(children: [
                               Icon(OMIcons.workOutline,color: Colors.grey,),
                               SizedBox(
                                 width:12,
@@ -442,7 +469,7 @@ showTripSheet(){
                                 )
                                 ],
                               )
-                            ],),
+                            ],),*/
                         ],
                       ),
                         ],
@@ -708,76 +735,65 @@ showTripSheet(){
                       SizedBox(height: 20,),
 
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
+                      FlatButton(
+                        onPressed: (){
+                                       //whatsAppOpen();
 
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
+                            launchWhatsApp(phone: '91$driverPhoneNumber',message: 'Hey I am on my way');
+                        },
+                        
+                                              child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
 
-                              Container(
-                                height: 50,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular((25))),
-                                  border: Border.all(width: 1.0, color: BrandColors.colorTextLight),
-                                ),
-                                child: Icon(Icons.call),
-                              ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
 
-                              SizedBox(height: 10,),
-
-                              Text('Call'),
-                            ],
-                          ),
-
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-
-                              Container(
-                                height: 50,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular((25))),
-                                  border: Border.all(width: 1.0, color: BrandColors.colorTextLight),
-                                ),
-                                child: Icon(Icons.list),
-                              ),
-
-                              SizedBox(height: 10,),
-
-                              Text('Details'),
-                            ],
-                          ),
-
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-
-                              FlatButton(
-                                      onPressed: (){
-                                        cancelRequest();
-                                      },
-                                                              child: Container(
+                                Container(
                                   height: 50,
                                   width: 50,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.all(Radius.circular((25))),
                                     border: Border.all(width: 1.0, color: BrandColors.colorTextLight),
                                   ),
-                                  child: Icon(OMIcons.clear),
+                                  child: Icon(Icons.call),
                                 ),
-                              ),
 
-                              SizedBox(height: 10,),
+                                SizedBox(height: 10,),
 
-                              Text('Cancel'),
-                            ],
-                          ),
+                                Text('Call Driver'),
+                              ],
+                            ),
 
-                        ],
+                            
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+
+                                /*FlatButton(
+                                        onPressed: (){
+                                          cancelRequest();
+                                        },
+                                                                child: Container(
+                                    height: 50,
+                                    width: 50,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(Radius.circular((25))),
+                                      border: Border.all(width: 1.0, color: BrandColors.colorTextLight),
+                                    ),
+                                    child: Icon(OMIcons.clear),
+                                  ),
+                                ),
+
+                                SizedBox(height: 10,),
+
+                                Text('Cancel'),*/
+                              ],
+                            ),
+
+                          ],
+                        ),
                       )
 
                     ],
@@ -1281,6 +1297,7 @@ void updateToDestination(LatLng driverLocation) async {
 
         return;
       }
+      
     });
     
     print(dest);
