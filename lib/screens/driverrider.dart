@@ -104,7 +104,7 @@ class _DriverRiderState extends State<DriverRider> {
       body: SingleChildScrollView(
 
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          /*padding: EdgeInsets.symmetric(horizontal: 20),
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
 
@@ -119,7 +119,7 @@ class _DriverRiderState extends State<DriverRider> {
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Color(0xFFB0BEC5), Color(0xFFECEFF1)])),
+                  colors: [Color(0xFFB0BEC5), Color(0xFFECEFF1)])),*/
 
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,

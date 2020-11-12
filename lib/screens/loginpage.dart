@@ -78,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
       key: scaffoldKey,
       backgroundColor: Colors.white,
       body: Container(
-        decoration: BoxDecoration(
+        /*decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(5)),
             boxShadow: <BoxShadow>[
               BoxShadow(
@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
             gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Color(0xFFB0BEC5), Color(0xFFECEFF1)])),
+                colors: [Color(0xFFB0BEC5), Color(0xFFECEFF1)])),*/
         child: Padding(
           padding: EdgeInsets.all(8.0),
           child: Column(

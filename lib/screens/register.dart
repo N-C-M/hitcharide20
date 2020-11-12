@@ -46,7 +46,7 @@ class _RegisterState extends State<Register> {
       context: context,
       builder: (BuildContext context) => ProgressDialog(status: 'Registering you in',),
     );*/
-
+//hi
     final FirebaseUser user = (await _auth
             .createUserWithEmailAndPassword(
       // auth aan monei correct aaitokke fill cheyne testingnu

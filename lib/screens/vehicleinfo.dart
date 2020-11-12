@@ -51,7 +51,7 @@ class VehicleInfoPage extends StatelessWidget {
 
         //child: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.all(30),
+           /* padding: EdgeInsets.all(30),
 
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -66,7 +66,7 @@ class VehicleInfoPage extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
 
-                  colors: [Color(0xFFB0BEC5), Color(0xFFECEFF1)])),
+                  colors: [Color(0xFFB0BEC5), Color(0xFFECEFF1)])),*/
 
 
           child: Column(
