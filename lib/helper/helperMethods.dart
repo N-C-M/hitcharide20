@@ -190,6 +190,38 @@ import 'package:http/http.dart' as http;
 
   }
 
+  /*static void getriderInfo(context){
+    DatabaseReference ridernew= FirebaseDatabase.instance.reference().child('users/${currentFirebaseUser.uid}/fullname');
+    
+
+
+
+    ridernew.once().then((DataSnapshot snapshot){
+
+      if(snapshot.value != null){
+        String dname = snapshot.value.toString();
+        Provider.of<AppData>(context, listen: false).updateName(dname);
+      }
+      
+      });
+
+     
+  }
+
+  static void getmail(context){
+        DatabaseReference mail= FirebaseDatabase.instance.reference().child('users/${currentFirebaseUser.uid}/email');
+         mail.once().then((DataSnapshot snapshot){
+
+      if(snapshot.value != null){
+        String mailval = snapshot.value.toString();
+        Provider.of<AppData>(context, listen: false).updateMail(mailval);
+      }
+      
+      });
+
+
+  }*/
+
 
   }
 

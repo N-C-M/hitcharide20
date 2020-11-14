@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -18,12 +19,16 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:workavane/brand_colors.dart';
 import 'package:workavane/datamodels/directiondetails.dart';
 import 'package:workavane/datamodels/nearbydriver.dart';
+import 'package:workavane/datamodels/user.dart';
 import 'package:workavane/dataprovider/appdata.dart';
 import 'package:workavane/globalvariables.dart';
 import 'package:workavane/helper/firehelper.dart';
 
 import 'package:workavane/helper/helperMethods.dart';
 import 'package:workavane/ridevar.dart';
+import 'package:workavane/screens/contact.dart';
+import 'package:workavane/screens/loginpage.dart';
+import 'package:workavane/screens/profile.dart';
 import 'package:workavane/screens/searchride.dart';
 import 'package:workavane/styles/styles.dart';
 import 'package:workavane/widgets/BrandDivider.dart';
@@ -49,6 +54,11 @@ class _MainPageState extends State<MainPage > with TickerProviderStateMixin{
     double mapBottomPadding=0;
     double rideDetailsSheetHeight = 0;
     double requestSheetHeight=0;
+
+// delete this
+
+
+//
 
 
     List<LatLng> polylineCoordinates = [];
@@ -83,6 +93,13 @@ class _MainPageState extends State<MainPage > with TickerProviderStateMixin{
   String appState='NORMAL';
 
   double tripSheetHeight = 0;
+
+  User rider;
+  
+  FirebaseAuth auth = FirebaseAuth.instance;
+  Future<void> logOut() async {
+    FirebaseUser user = auth.signOut() as FirebaseUser;
+  }
 
   
 
@@ -158,12 +175,32 @@ showTripSheet(){
       });
     }
   }
+ 
+ //to change today
+
+   void getCurrentRiderInfo () async {
+
+    currentFirebaseUser = await FirebaseAuth.instance.currentUser();
+    DatabaseReference riderRef = FirebaseDatabase.instance.reference().child('users/${currentFirebaseUser.uid}');
+    riderRef.once().then((DataSnapshot snapshot){
+
+      if(snapshot.value != null){
+        rider= User.fromSnapshot(snapshot);
+        print(rider.fullName);
+      }
+
+    });
+
+  }
 
   @override
    void initState() {
     super.initState();
     HelperMethods.getCurrentUserInfo();
   }
+
+
+
 
  void launchWhatsApp({
   @required String phone,
@@ -195,6 +232,7 @@ showTripSheet(){
   Widget build(BuildContext context) {
 
         createMarker();
+        
 
 
     return Scaffold(
@@ -221,9 +259,9 @@ showTripSheet(){
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text('Ningal Ith Kanu', style: TextStyle(fontSize: 15, fontFamily: 'Brand-Bold'),),
+                          Text('Welcome User!', style: TextStyle(fontSize: 15, fontFamily: 'Brand-Bold'),),
                           SizedBox(height: 5,),
-                          Text('View Profile'),
+                          
                         ],
                       )
                       
@@ -236,32 +274,60 @@ showTripSheet(){
                 BrandDivider(),
                 SizedBox(height: 10,),
 
-              ListTile(
-                leading: Icon(OMIcons.cardGiftcard),
-                title: Text('Free Rides', style: kDrawerItemStyle,),
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Profile()));
+
+            getCurrentRiderInfo();
+                },
+                              child: ListTile(
+                  leading: Icon(OMIcons.portrait),
+                  title: Text('View Profile', style: kDrawerItemStyle,),
+                ),
               ),
+                               SizedBox(height: 10,),
 
               ListTile(
-                leading: Icon(OMIcons.creditCard),
-                title: Text('Payments', style: kDrawerItemStyle,),
+                leading: Icon(OMIcons.collectionsBookmark),
+                title: Text('See Pre-Booked Rides', style: kDrawerItemStyle,),
               ),
+                              SizedBox(height: 10,),
 
               ListTile(
                 leading: Icon(OMIcons.history),
                 title: Text('Ride History', style: kDrawerItemStyle,),
               ),
 
-              ListTile(
-                leading: Icon(OMIcons.contactSupport),
-                title: Text('Support', style: kDrawerItemStyle,),
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(
+            context, MaterialPageRoute(builder: (context) => contactPage()));
+                },
+                              child: ListTile(
+                  leading: Icon(OMIcons.contactSupport),
+                  title: Text('Contact Us', style: kDrawerItemStyle,),
+                ),
               ),
 
-              ListTile(
+             /* ListTile(
                 leading: Icon(OMIcons.info),
                 title: Text('About', style: kDrawerItemStyle,),
-              ),
-
-
+              ),*/
+              
+              ListTile(
+                  leading: Icon(OMIcons.exitToApp),
+                  title: Text(
+                    'Sign Out',
+                    style: kDrawerItemStyle,
+                  ),
+                  onTap: () {
+                    logOut();
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => LoginPage()));
+                  }),
             ],
           ),
           
@@ -440,8 +506,8 @@ showTripSheet(){
                                   
                                   Text('Current Location',style: TextStyle(fontSize: 16),),
                                 SizedBox(height: 3,),
-                                Text('Your residential address',
-                                  style: TextStyle(fontSize: 11, color: Colors.grey,),
+                                Text((Provider.of<AppData>(context).pickupAddress!=null)?Provider.of<AppData>(context).pickupAddress.placeName:'Your Location',
+                                  style: TextStyle(fontSize: 8, color: Colors.grey,),
                                 )
                                 ],
                               )
