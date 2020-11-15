@@ -178,7 +178,7 @@ showTripSheet(){
  
  //to change today
 
-   void getCurrentRiderInfo () async {
+  /* void getCurrentRiderInfo () async {
 
     currentFirebaseUser = await FirebaseAuth.instance.currentUser();
     DatabaseReference riderRef = FirebaseDatabase.instance.reference().child('users/${currentFirebaseUser.uid}');
@@ -191,12 +191,14 @@ showTripSheet(){
 
     });
 
-  }
+
+  }*/
 
   @override
    void initState() {
     super.initState();
     HelperMethods.getCurrentUserInfo();
+
   }
 
 
@@ -259,7 +261,9 @@ showTripSheet(){
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text('Welcome User!', style: TextStyle(fontSize: 15, fontFamily: 'Brand-Bold'),),
+
+                          Text('Hey...'),
+                          Text((currentUserInfo.fullName!=null)?currentUserInfo.fullName:'User!', style: TextStyle(fontSize: 20, fontFamily: 'Brand-Bold'),),
                           SizedBox(height: 5,),
                           
                         ],
@@ -278,8 +282,10 @@ showTripSheet(){
                 onTap: (){
                   Navigator.push(
             context, MaterialPageRoute(builder: (context) => Profile()));
+            HelperMethods.getriderInfo(context);
+            HelperMethods.getmail(context);
+            HelperMethods.getphone(context);
 
-            getCurrentRiderInfo();
                 },
                               child: ListTile(
                   leading: Icon(OMIcons.portrait),

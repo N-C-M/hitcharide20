@@ -190,7 +190,7 @@ import 'package:http/http.dart' as http;
 
   }
 
-  /*static void getriderInfo(context){
+  static void getriderInfo(context){
     DatabaseReference ridernew= FirebaseDatabase.instance.reference().child('users/${currentFirebaseUser.uid}/fullname');
     
 
@@ -220,7 +220,22 @@ import 'package:http/http.dart' as http;
       });
 
 
-  }*/
+  }
+
+  static void getphone(context){
+
+    DatabaseReference phonenum= FirebaseDatabase.instance.reference().child('users/${currentFirebaseUser.uid}/phone');         
+    phonenum.once().then((DataSnapshot snapshot){
+
+      if(snapshot.value != null){
+        String phonenumber = snapshot.value.toString();
+        Provider.of<AppData>(context, listen: false).updatePhn(phonenumber);
+      }
+      
+      });
+
+
+  }
 
 
   }

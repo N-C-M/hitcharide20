@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:workavane/screens/driverrider.dart';
 import 'package:workavane/widgets/TaxiButton.dart';
 import 'package:workavane/screens/mainpage.dart';
 
@@ -82,6 +81,7 @@ class _RegisterState extends State<Register> {
       Navigator.pushNamedAndRemoveUntil(
           context, MainPage.id, (route) => false);
     }
+  
   }
 
   @override

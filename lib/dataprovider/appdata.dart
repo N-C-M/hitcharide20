@@ -1,16 +1,16 @@
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:workavane/datamodels/address.dart';
-import 'package:workavane/globalvariables.dart';
+import 'package:workavane/datamodels/user.dart';
 
 class AppData extends ChangeNotifier{
 
   Address pickupAddress;
 
   Address destinationAddress;
+  User userinfo;
   String fullname='Hello';
-  String mailvalue='edef';
+  String mailvalue= 'hello@gmail.com';
+  String phone='956121425';
 
   void updatePickupAddress(Address pickup){
     
@@ -25,7 +25,7 @@ class AppData extends ChangeNotifier{
 
   }
 
-    void updateName(String dname){
+   void updateName(String dname){
     fullname=dname;
     notifyListeners();
   }
@@ -33,5 +33,10 @@ class AppData extends ChangeNotifier{
   void updateMail(String mailval){
     mailvalue=mailval;
     notifyListeners();
+  }
+  void updatePhn(String phonenum){
+    phone=phonenum;
+    notifyListeners();
+
   }
 }

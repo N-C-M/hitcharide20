@@ -1,5 +1,7 @@
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:workavane/dataprovider/appdata.dart';
 
 const email = 'Email-Id';
 const phone = 'My phone nuber is 2244';
@@ -30,7 +32,7 @@ class Profile extends StatelessWidget {
     );
     showDialog(context: context, builder: (x) => dialog);
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +45,7 @@ class Profile extends StatelessWidget {
               backgroundImage: NetworkImage(
                   'https://prod.cdn.earlygame.com/uploads/images/_imageBlock/Valorant-Jett-artwork.jpg?mtime=20200527162418&focal=none&tmtime=20201005083153'),
             ),
-            Text('Ivde Name Varanam',
+            Text('${Provider.of<AppData>(context).fullname}',
                 style: GoogleFonts.pacifico(
                     fontSize: 40,
                     color: Colors.blueGrey,
@@ -64,12 +66,12 @@ class Profile extends StatelessWidget {
               ),
             ),
             InfoCard(
-              text: phone,
+              text: '${Provider.of<AppData>(context).phone}',
               icon: Icons.phone,
               onPressed: () {},
             ),
             InfoCard(
-              text: email,
+              text: '${Provider.of<AppData>(context).mailvalue}',
               icon: Icons.email,
               onPressed: () {},
             ),
