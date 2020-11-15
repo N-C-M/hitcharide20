@@ -263,7 +263,7 @@ showTripSheet(){
                         children: <Widget>[
 
                           Text('Hey...'),
-                          Text((currentUserInfo.fullName!=null)?currentUserInfo.fullName:'User!', style: TextStyle(fontSize: 20, fontFamily: 'Brand-Bold'),),
+                          Text(/*(currentUserInfo.fullName!=null)?currentUserInfo.fullName:'User!'*/'Hey', style: TextStyle(fontSize: 20, fontFamily: 'Brand-Bold'),),
                           SizedBox(height: 5,),
                           
                         ],
@@ -1103,6 +1103,7 @@ void createRideRequest(){
 
     Map rideMap = {
       'created_at': DateTime.now().toString(),
+      'rider_id':currentUserInfo.id,
       'rider_name': currentUserInfo.fullName,
       'rider_phone': currentUserInfo.phone,
       'pickup_address' : pickup.placeName,
@@ -1179,6 +1180,10 @@ void createRideRequest(){
       }
 
       if(status == 'accepted'){
+
+        DatabaseReference historyRef = FirebaseDatabase.instance.reference().child('users/${currentFirebaseUser.uid}/history');
+        historyRef.set(true);
+
         showTripSheet();
         Geofire.stopListener();
         removeGeofireMarkers();
