@@ -29,6 +29,7 @@ import 'package:workavane/ridevar.dart';
 import 'package:workavane/screens/contact.dart';
 import 'package:workavane/screens/loginpage.dart';
 import 'package:workavane/screens/profile.dart';
+import 'package:workavane/screens/scheduled.dart';
 import 'package:workavane/screens/searchride.dart';
 import 'package:workavane/styles/styles.dart';
 import 'package:workavane/widgets/BrandDivider.dart';
@@ -294,9 +295,16 @@ showTripSheet(){
               ),
                                SizedBox(height: 10,),
 
-              ListTile(
-                leading: Icon(OMIcons.collectionsBookmark),
-                title: Text('See Pre-Booked Rides', style: kDrawerItemStyle,),
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Scheduled()));
+                  
+                },
+                              child: ListTile(
+                  leading: Icon(OMIcons.collectionsBookmark),
+                  title: Text('See Pre-Booked Rides', style: kDrawerItemStyle,),
+                ),
               ),
                               SizedBox(height: 10,),
 
