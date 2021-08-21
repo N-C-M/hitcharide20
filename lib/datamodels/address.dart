@@ -8,11 +8,11 @@ class Address{
 
   Address(
     {
-      this.placeId='ABC',
-      this.latitude=0.0,
-      this.longitude=0.0,
-      this.placeFormattedAddress='AAADDD',
-      this.placeName='AMNGA',
+      this.placeId,
+      this.latitude,
+      this.longitude,
+      this.placeFormattedAddress,
+      this.placeName,
     }
 
   );
